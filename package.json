@@ -1,7 +1,7 @@
 {
-  "name": "goit-node-js",
+  "name": "timemanagement_backend",
   "version": "1.0.0",
-  "description": "goit-node-js",
+  "description": "timemanagement_backend",
   "type": "module",
   "main": "index.js",
   "scripts": {
