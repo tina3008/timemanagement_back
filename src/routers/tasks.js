@@ -1,18 +1,18 @@
 import { Router } from 'express';
 import express from 'express';
 import {
-  getContactIDController,
-  getContactsController,
-  createContactController,
-  deleteContactController,
-  changeContactController,
-} from '../controllers/contacts.js';
+  getTaskIDController,
+  getTasksController,
+  createTaskController,
+  deleteTaskController,
+  changeTaskController,
+} from '../controllers/tasks.js';
 import { ctrlWrapper } from '../middlewares/ctrlWrapper.js';
 import { validateBody } from '../middlewares/validateBody.js';
 import {
-  schemaContactPost,
-  schemaContactPatch,
-} from '../validation/contacts.js';
+  schemaTaskPost,
+  schemaTaskPatch,
+} from '../validation/tasks.js';
 import { isValidID } from '../middlewares/isValidId.js';
 import { authenticate } from '../middlewares/authenticate.js';
 import { checkRoles } from '../middlewares/checkRoles.js';
@@ -24,35 +24,40 @@ const router = Router();
 
 router.use(authenticate);
 
-router.get('/', ctrlWrapper(getContactsController));
+// router.get('/', ctrlWrapper(getTasksController));
+ router.get('/', (req, res) => {
+   res.json({
+     message: 'this is tasks!',
+   });
+ });
 
 router.get(
-  '/:contactId',
+  '/:taskId',
 
   checkRoles(ROLES.AUTOR),
   isValidID,
-  ctrlWrapper(getContactIDController),
+  ctrlWrapper(getTaskIDController),
 );
 
 router.post(
   '/',
   upload.single('photo'),
-  validateBody(schemaContactPost),
-  ctrlWrapper(createContactController),
+  validateBody(schemaTaskPost),
+  ctrlWrapper(createTaskController),
 );
 router.delete(
-  '/:contactId',
+  '/:taskId',
   isValidID,
   checkRoles(ROLES.AUTOR),
-  ctrlWrapper(deleteContactController),
+  ctrlWrapper(deleteTaskController),
 );
 router.patch(
-  '/:contactId',
+  '/:taskId',
 
   upload.single('photo'),
   checkRoles(ROLES.AUTOR),
-  validateBody(schemaContactPatch),
-  ctrlWrapper(changeContactController),
+  validateBody(schemaTaskPatch),
+  ctrlWrapper(changeTaskController),
 );
 
 export default router;

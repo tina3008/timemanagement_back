@@ -1,10 +1,10 @@
 import {
-  createContact,
-  deleteContact,
-  getAllContacts,
-  getContactById,
-  patchContact,
-} from '../services/contacts.js';
+  createTask,
+  deleteTask,
+  getAllTasks,
+  getTaskById,
+  patchTask,
+} from '../services/tasks.js';
 import createHttpError from 'http-errors';
 import { parsePaginationParams } from '../utils/parsePaginationParams.js';
 import { parseSortParams } from '../utils/parseSortParams.js';
@@ -13,12 +13,12 @@ import { saveFileToUploadDir } from '../utils/saveFileToUploadDir.js';
 import { saveFileToCloudinary } from '../utils/saveFileToCloudinary.js';
 import { env } from '../utils/env.js';
 
-export const getContactsController = async (req, res) => {
+export const getTasksController = async (req, res) => {
   const { page, perPage } = parsePaginationParams(req.query);
   const { sortBy, sortOrder } = parseSortParams(req.query);
   const filter = parseFilterParams(req.query);
 
-  const contacts = await getAllContacts({
+  const tasks = await getAllTasks({
     page,
     perPage,
     sortBy,
@@ -29,26 +29,26 @@ export const getContactsController = async (req, res) => {
 
   res.json({
     status: 200,
-    message: 'Successfully found contacts!',
-    data: contacts,
+    message: 'Successfully found tasks!',
+    data: tasks,
   });
 };
 
-export const getContactIDController = async (req, res, next) => {
-  const { contactId } = req.params;
-  const contact = await getContactById(contactId, req.user._id);
+export const getTaskIDController = async (req, res, next) => {
+  const { taskId } = req.params;
+  const task = await getTaskById(taskId, req.user._id);
 
-  if (!contact) {
-    throw createHttpError(404, `Contact not found, ${contactId}`);
+  if (!task) {
+    throw createHttpError(404, `Task not found, ${taskId}`);
   }
   res.status(200).json({
     status: 200,
-    message: `Successfully found contact with id ${contactId}!`,
-    data: contact,
+    message: `Successfully found task with id ${taskId}!`,
+    data: task,
   });
 };
 
-export const createContactController = async (req, res) => {
+export const createTaskController = async (req, res) => {
    const photo = req.file;
 
    let photoUrl;
@@ -60,37 +60,37 @@ export const createContactController = async (req, res) => {
        photoUrl = await saveFileToUploadDir(photo);
      }
    }
-  const contactFields = {
+  const taskFields = {
     name: req.body.name,
     phoneNumber: req.body.phoneNumber,
     email: req.body.email,
     isFavourite: req.body.isFavourite,
-    contactType: req.body.contactType,
+    taskType: req.body.taskType,
     userId: req.user._id,
     photo: photoUrl,
   };
-  const contact = await createContact(contactFields);
+  const task = await createTask(taskFields);
   res.status(201).json({
     status: 201,
-    message: 'Successfully created a contact!',
-    data: contact,
+    message: 'Successfully created a task!',
+    data: task,
   });
 };
 
-export const deleteContactController = async (req, res) => {
-  const { contactId } = req.params;
+export const deleteTaskController = async (req, res) => {
+  const { taskId } = req.params;
 
-  const contact = await deleteContact(contactId, req.user._id);
+  const task = await deleteTask(taskId, req.user._id);
 
-  if (!contact) {
-    throw createHttpError(404, 'Contact not found');
+  if (!task) {
+    throw createHttpError(404, 'Task not found');
   }
 
   res.status(204).send();
 };
 
-export const changeContactController = async (req, res, next) => {
-  const { contactId } = req.params;
+export const changeTaskController = async (req, res, next) => {
+  const { taskId } = req.params;
   const photo = req.file;
 
   let photoUrl;
@@ -103,19 +103,19 @@ export const changeContactController = async (req, res, next) => {
     }
   }
 
-  const result = await patchContact(contactId, req.user._id, {
+  const result = await patchTask(taskId, req.user._id, {
     ...req.body,
     photo: photoUrl,
   });
 
   if (!result) {
-    next(createHttpError(404, `Contact not found ${contactId}`));
+    next(createHttpError(404, `Task not found ${taskId}`));
     return;
   }
 
   res.json({
     status: 200,
-    message: 'Successfully patched a contact!',
-    data: result.contact,
+    message: 'Successfully patched a task!',
+    data: result.task,
   });
 };

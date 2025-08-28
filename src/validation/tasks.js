@@ -1,6 +1,6 @@
 import Joi from 'joi';
 
-export const schemaContactPost = Joi.object({
+export const schemaTaskPost = Joi.object({
   name: Joi.string().min(3).max(20).required(),
 
   phoneNumber: Joi.string()
@@ -19,10 +19,10 @@ export const schemaContactPost = Joi.object({
 
   isFavourite: Joi.boolean(),
 
-  contactType: Joi.string().valid('work', 'home', 'personal').required(),
+  taskType: Joi.string().valid('work', 'home', 'personal').required(),
 });
 
-export const schemaContactPatch = Joi.object({
+export const schemaTaskPatch = Joi.object({
   name: Joi.string().min(3).max(20),
 
   phoneNumber: Joi.string()
@@ -40,5 +40,5 @@ export const schemaContactPatch = Joi.object({
 
   isFavourite: Joi.boolean(),
 
-  contactType: Joi.string().valid('work', 'home', 'personal'),
+  taskType: Joi.string().valid('work', 'home', 'personal'),
 });

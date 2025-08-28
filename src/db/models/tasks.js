@@ -1,24 +1,29 @@
 import { model, Schema } from 'mongoose';
 
-const contactsSchema = new Schema(
+const tasksSchema = new Schema(
   {
-    name: {
+    task: {
       type: String,
       required: true,
     },
-    phoneNumber: {
-      type: String,
+    date: {
+      type: Date,
       required: true,
     },
-    email: {
-      type: String,
+    timeDeclaration: {
+      type: Date,
+      required: true,
+    },
+    timeReal: {
+      type: Date,
       required: false,
     },
-    isFavourite: {
-      type: Boolean,
-      default: false,
+    timeDifferent: {
+      type: Date,
+      required: false,
     },
-    contactType: {
+
+    taskType: {
       type: String,
       required: true,
       enum: ['work', 'home', 'personal'],
@@ -36,5 +41,5 @@ const contactsSchema = new Schema(
   },
 );
 
-const ContactsCollection = model('contacts', contactsSchema);
-export default ContactsCollection;
+const TasksCollection = model('tasks', tasksSchema);
+export default TasksCollection;

@@ -1,6 +1,6 @@
 import createHttpError from 'http-errors';
 
-import ContactsCollection from '../db/models/contact.js';
+import TimeMnmtCollection from '../db/models/tasks.js';
 import { ROLES } from '../constants/index.js';
 
 export const checkRoles =
@@ -15,18 +15,18 @@ export const checkRoles =
     const { role } = user;
 
     if (roles.includes(ROLES.AUTOR) && role === ROLES.AUTOR) {
-      const { contactId } = req.params;
-      if (!contactId) {
+      const { timeMnmtId } = req.params;
+      if (!timeMnmtId) {
         next(createHttpError(404));
         return;
       }
 
-      const contact = await ContactsCollection.findOne({
-        _id: contactId,
+      const timeMnmt = await TimeMnmtCollection.findOne({
+        _id: timeMnmtId,
         userId: user._id,
       });
 
-      if (contact) {
+      if (timeMnmt) {
         next();
         return;
       }
