@@ -1,0 +1,47 @@
+tags:
+  - Auth
+summary: Login user
+operationId: loginrUsert
+description: 'Login a user '
+security:
+  - bearerAuth: []
+requestBody:
+  content:
+    application/json:
+      schema:
+        type: object
+        required:
+          - email
+          - password
+        properties:
+          email:
+            definitions: "user's email"
+            type: string
+            example: dasd@fsdf.com
+          password:
+            definitions: "user's password"
+            type: string
+            example: "bbfdbhfds"
+responses:
+  '200':
+    description: Login a User
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - status
+            - message
+            - data
+          properties:
+            status:
+              type: integer
+              example: 200
+            message:
+              type: string
+              example: Successfully logged in a user!
+            data:
+              type: object
+              $ref: ..\..\..\components\schemas\session.yaml
+  '401':
+    $ref: ..\..\..\components\responses\401.yaml

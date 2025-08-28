@@ -1,0 +1,52 @@
+tags:
+    - Auth
+summary: Reset password using token
+operationId: resetPasswordController
+description: "reset user's password"
+security:
+  - bearerAuth: []
+# parameters:
+#   - name: accessToken
+#     in: path
+#     description: "active user's token"
+#     required: true
+#     schema:
+#       type: string
+#       example: '6Ug2i00+Id20XaepdQV5DYHifOudD56R+QBcYq0K'
+requestBody:
+  content:
+    application/json:
+      schema:
+        type: object
+        required:
+          - newPassword
+        properties:
+          newPassword:
+            description: New password for the user
+            type: string
+            format: password
+            example: "eqwrwet45"
+
+responses:
+  '200':
+    description: "reset User's password"
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - status
+            - message
+            - data
+          properties:
+            status:
+              type: integer
+              example: 200
+            message:
+              type: string
+              example: "'Password was successfully reset!'"
+            data:
+              type: object
+
+  '401':
+    $ref: ..\..\..\components\responses\401.yaml

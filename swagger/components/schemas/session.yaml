@@ -1,0 +1,30 @@
+type: object
+required:
+  - userId
+  - accessToken
+  - refreshToken
+  - accessTokenValidUntil
+  - refreshTokenValidUntil
+properties:
+  userId:
+    description: Reference to the user
+    type: string
+    example: 6692528c222b4be7b4b17ebd
+  accessToken:
+    description: Access token for the session
+    type: string
+    example: v4wfDN6mRe8olKuTJfPidyvIKRPyQlSIv60WkGGI
+  refreshToken:
+    description: Refresh token for the session
+    type: string
+    example: v4wfDN6mRe8olKuTJfPidyvIKRPyQlSIv60WkGGI
+  accessTokenValidUntil:
+    description: Expiration date for the access token
+    type: string
+    format: date-time
+    example: "Mon, 09 Sep. 09:20:31 GMT"
+  refreshTokenValidUntil:
+    description: Expiration date for the refresh token
+    type: string
+    format: date-time
+    example: "Mon, 09 Sep. 09:20:31 GMT"

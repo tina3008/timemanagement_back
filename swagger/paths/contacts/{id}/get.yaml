@@ -1,0 +1,38 @@
+tags:
+  - Contacts
+summary: Get scontact by id
+operationId: getContactIDController
+description: 'Get contact by id'
+security:
+  - bearerAuth: []
+parameters:
+  - in: path
+    name: id
+    required: true
+    schema:
+      type: string
+      example: 6692528c222b4be7b4b17ebd
+responses:
+  '200':
+    description: 'Get contact by id'
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+           - status
+           - message
+           - data
+          properties:
+            status:
+              type: integer
+              example: 200
+            message:
+              type: string
+              example: Successfully found contact with id 6692528c222b4be7b4b17ebd!
+            data:
+              type: object
+              $ref: ..\..\..\components\schemas\contacts.yaml
+  '404':
+    $ref: ..\..\..\components\responses\404.yaml
+

@@ -1,0 +1,42 @@
+tags:
+  - Auth
+summary: Login with Google
+operationId: confirmAuth
+description: Confirm user authentication with Google
+security:
+  - bearerAuth: []
+requestBody:
+  content:
+    application/json:
+      schema:
+        type: object
+        required:
+          - accessToken
+        properties:
+          accessToken:
+            description: Google OAuth token
+            type: string
+            example: "6Ug2i00+Id20XaepdQV5DYHifOudD56R+QBcYq0K"
+responses:
+  '200':
+    description: Confirm user authentication
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - status
+            - message
+            - data
+          properties:
+            status:
+              type: integer
+              example: 200
+            message:
+              type: string
+              example: Successfully user authentication!
+            data:
+              type: object
+              $ref: ..\..\..\components\schemas\session.yaml
+  '401':
+    $ref: ..\..\..\components\responses\401.yaml

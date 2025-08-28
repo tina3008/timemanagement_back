@@ -1,0 +1,38 @@
+tags:
+  - Auth
+summary: "Get OAuth URL"
+operationId:  getGoogleOAuthUrlController
+description: "Get contact by URL"
+security:
+  - bearerAuth: []
+# parameters:
+#   - in: path
+#     name: _id
+#     required: true
+#     schema:
+#       type: string
+#       example: "6692528c222b4be7b4b17ebd"
+responses:
+  '200':
+    description: OAuth URL retrieved successfully
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - status
+            - message
+            - data
+          properties:
+            status:
+              type: integer
+              example: 200
+            message:
+              type: string
+              example: Successfully get Google OAuth url!
+            data:
+              type: string
+              example: "http://localhost:3000/confirm-google-auth?code=4%2F0AcvDMrDHDie7a1CjeoqFssnq4ybeHgS4rt79RLGvPmXnG84MBbX1Gzh4unFH4mJnkLMElA&scope=email+profile+openid+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email&authuser=0&prompt=consent"
+  '401':
+    $ref: ..\..\..\components\responses\401.yaml
+

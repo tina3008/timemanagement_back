@@ -1,0 +1,25 @@
+tags:
+  - Auth
+summary: Logout user
+operationId: logoutUser
+description: 'Logout a user and close session'
+security:
+  - bearerAuth: []
+requestBody:
+  content:
+    application/json:
+      schema:
+        type: object
+        required:
+          - refreshToken
+        properties:
+          refreshToken:
+            description: "active user'stoken"
+            type: string
+            example: 6Ug2i00+Id20XaepdQV5DYHifOudD56R+QBcYq0K
+
+responses:
+  '204':
+    description: 'Logout a user and close session'
+  '401':
+    $ref: ..\..\..\components\responses\401.yaml

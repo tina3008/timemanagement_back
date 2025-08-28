@@ -1,0 +1,26 @@
+type: object
+required:
+  - _id
+  - name
+  - email
+  - password
+  - role
+properties:
+    _id:
+      definitions: "Contact's ID"
+      type: string
+      example: 6692528c222b4be7b4b17ebd
+    name:
+      definitions: "full name"
+      type: string
+      example: dddhh aayyz
+    email:
+      definitions: "User's email"
+      type: string
+      example: "qwee3@example.com"
+    password:
+      definitions: "User's email"
+      type: string
+      example: "grgr325"
+
+
