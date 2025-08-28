@@ -6,40 +6,47 @@ const tasksSchema = new Schema(
       type: String,
       required: true,
     },
-    date: {
-      type: Date,
-      required: true,
-    },
     timeDeclaration: {
-      type: Date,
+      type: Number,
       required: true,
     },
     timeReal: {
-      type: Date,
+      type: Number,
       required: false,
     },
-    timeDifferent: {
-      type: Date,
-      required: false,
-    },
-
     taskType: {
       type: String,
       required: true,
       enum: ['work', 'home', 'personal'],
       default: 'personal',
     },
-    userId: {
-      type: Schema.Types.ObjectId,
+    date: {
+      type: Date,
       required: true,
     },
-    photo: { type: String },
+    status: {
+      type: String,
+      enum: ['completed', 'pending','working'],
+      default: 'pending',
+    },
+    userId: {
+      type: Schema.Types.ObjectId,
+      ref: 'User',
+      required: true,
+    },
   },
   {
     timestamps: true,
     versionKey: false,
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true },
   },
 );
+
+tasksSchema.virtual('timeDifferent').get(function () {
+  if (this.timeReal == null) return null;
+  return this.timeReal - this.timeDeclaration;
+});
 
 const TasksCollection = model('tasks', tasksSchema);
 export default TasksCollection;

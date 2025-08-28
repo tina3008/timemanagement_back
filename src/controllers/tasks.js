@@ -49,25 +49,15 @@ export const getTaskIDController = async (req, res, next) => {
 };
 
 export const createTaskController = async (req, res) => {
-   const photo = req.file;
 
-   let photoUrl;
-
-   if (photo) {
-     if (env('ENABLE_CLOUDINARY') === 'true') {
-       photoUrl = await saveFileToCloudinary(photo);
-     } else {
-       photoUrl = await saveFileToUploadDir(photo);
-     }
-   }
   const taskFields = {
-    name: req.body.name,
-    phoneNumber: req.body.phoneNumber,
-    email: req.body.email,
-    isFavourite: req.body.isFavourite,
+    task: req.body.task,
+    timeDeclaration: req.body.timeDeclaration,
+    timeReal: req.body.timeReal,
     taskType: req.body.taskType,
+    date: req.body.date,
+    status:req.body.status,
     userId: req.user._id,
-    photo: photoUrl,
   };
   const task = await createTask(taskFields);
   res.status(201).json({
@@ -91,21 +81,10 @@ export const deleteTaskController = async (req, res) => {
 
 export const changeTaskController = async (req, res, next) => {
   const { taskId } = req.params;
-  const photo = req.file;
-
-  let photoUrl;
-
-  if (photo) {
-    if (env('ENABLE_CLOUDINARY') === 'true') {
-      photoUrl = await saveFileToCloudinary(photo);
-    } else {
-      photoUrl = await saveFileToUploadDir(photo);
-    }
-  }
 
   const result = await patchTask(taskId, req.user._id, {
     ...req.body,
-    photo: photoUrl,
+
   });
 
   if (!result) {

@@ -1,0 +1,57 @@
+type: object
+required:
+  - _id
+  - task
+  - timeDeclaration
+  - timeReal
+  - taskType
+  - date
+  - status
+  - userId
+properties:
+    _id:
+      definitions: "task's ID"
+      type: string
+      example: 6692528c222b4be7b4b17ebd
+    task:
+      definitions: "task"
+      type: string
+      example: dddhh aayyz
+
+    timeDeclaration:
+      definitions: "120"
+      type: number
+      example: 120
+
+    timeReal:
+      definitions: "120"
+      type: number
+      example: 120
+
+    isFavourite:
+      definitions: "Would you like or not?"
+      type: boolean
+      example: false
+
+    taskType:
+      definitions: "task's work place"
+      type: string
+      example: work
+      enum: ['work', 'home', 'personal']
+      default: 'personal'
+
+    userId:
+      definitions: "Autorth's task ID"
+      type: string
+      example: 6692528c222b4be7b4b17ebd
+
+    date:
+        definitions: "date"
+        type: date
+        example: "2025-09-13T18:10:00.000Z"
+    status:
+        definitions: "task's status"
+        type: string
+        example: pending
+        enum: ['completed', 'pending','working']
+        default: 'pending'

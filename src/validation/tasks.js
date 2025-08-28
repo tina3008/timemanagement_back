@@ -1,44 +1,94 @@
+// import Joi from 'joi';
+
+// export const schemaTaskPost = Joi.object({
+//   task: Joi.string().min(3).max(200).required().messages({
+//     'string.empty': 'Task is a required field',
+//     'string.min': 'Task must has 3 simvols',
+//     'string.max': 'Task too long',
+//   }),
+
+//   timeDeclaration: Joi.number().integer().min(1).required().messages({
+//     'number.base': 'Time must be number',
+//     'number.min': 'minimum time — 1',
+//     'any.required': 'Time is a required field',
+//   }),
+//   taskType: Joi.string().valid('work', 'home', 'personal').required().messages({
+//     'any.only': 'Type can be work, home or personal',
+//     'any.required': 'Type is a required field',
+//   }),
+//   date: Joi.date().required().messages({
+//     'date.base': 'Date must be a valid date',
+//     'any.required': 'Date is a required field',
+//   }),
+//   userId: Joi.string()
+//     .regex(/^[0-9a-fA-F]{24}$/)
+//     .required()
+//     .messages({
+//       'any.required': 'userId is requared',
+//     }),
+// });
+
+
+
 import Joi from 'joi';
 
 export const schemaTaskPost = Joi.object({
-  name: Joi.string().min(3).max(20).required(),
+  task: Joi.string().min(3).max(200).required().messages({
+    'string.empty': 'Task is a required field',
+    'string.min': 'Task must have at least 3 symbols',
+    'string.max': 'Task is too long',
+  }),
 
-  phoneNumber: Joi.string()
-    .min(3)
-    .max(20)
-    .pattern(/[+*0-9]{3,20}$/)
-    .required(),
+  timeDeclaration: Joi.number().integer().min(1).required().messages({
+    'number.base': 'Time must be number',
+    'number.min': 'Minimum time — 1',
+    'any.required': 'Time is a required field',
+  }),
 
-  email: Joi.string()
-    .min(3)
-    .max(20)
-    .email({
-      minDomainSegments: 2,
-      tlds: { allow: ['com', 'net'] },
+  taskType: Joi.string().valid('work', 'home', 'personal').required().messages({
+    'any.only': 'Type can be work, home or personal',
+    'any.required': 'Type is a required field',
+  }),
+
+  date: Joi.date().required().messages({
+    'date.base': 'Date must be a valid date',
+    'any.required': 'Date is a required field',
+  }),
+  status: Joi.string()
+    .valid('completed', 'pending', 'working')
+    .messages({
+      'any.only': 'Type can be completed, pending, working',
+      'any.required': 'Type is a required field',
     }),
-
-  isFavourite: Joi.boolean(),
-
-  taskType: Joi.string().valid('work', 'home', 'personal').required(),
+  userId: Joi.string()
+    .regex(/^[0-9a-fA-F]{24}$/)
+    .required()
+    .messages({
+      'string.pattern.base': 'userId must be a valid ObjectId',
+      'any.required': 'userId is required',
+    }),
 });
 
+
 export const schemaTaskPatch = Joi.object({
-  name: Joi.string().min(3).max(20),
+  task: Joi.string().min(3).max(200).optional(),
 
-  phoneNumber: Joi.string()
-    .min(3)
-    .max(20)
-    .pattern(/[+*0-9]{3,20}$/),
+  timeDeclaration: Joi.number().integer().min(1).optional(),
 
-  email: Joi.string()
-    .min(3)
-    .max(20)
-    .email({
-      minDomainSegments: 2,
-      tlds: { allow: ['com', 'net'] },
+  timeReal: Joi.number().integer().min(0).optional(),
+
+  taskType: Joi.string().valid('work', 'home', 'personal').optional(),
+  date: Joi.date().optional().messages({
+    'date.base': 'Date must be a valid date',
+  }),
+  status: Joi.string()
+    .valid('completed', 'pending', 'working')
+    .optional()
+    .messages({
+      'any.only': 'Type can be completed, pending, working',
+      'any.required': 'Type is a required field',
     }),
-
-  isFavourite: Joi.boolean(),
-
-  taskType: Joi.string().valid('work', 'home', 'personal'),
+  userId: Joi.string()
+    .regex(/^[0-9a-fA-F]{24}$/)
+    .optional(),
 });

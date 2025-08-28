@@ -1,8 +1,8 @@
 tags:
-  - Contacts
-summary: Change contact by ID
-operationId: ChangeContact
-description: 'Change a contact by ID'
+  - Tasks
+summary: Change task by ID
+operationId: ChangeTask
+description: 'Change a task by ID'
 security:
   - bearerAuth: []
 parameters:
@@ -24,12 +24,12 @@ requestBody:
             example: dddhh aayyz
 
           phoneNumber:
-            definitions: "contact's phone number"
+            definitions: "task's phone number"
             type: string
             example: +380000000002
 
           email:
-            definitions: "contact's phone number"
+            definitions: "task's phone number"
             type: string
             example: "qwee3@example.com"
 
@@ -38,20 +38,20 @@ requestBody:
             type: boolean
             example: false
 
-          contactType:
-            definitions: "Contact's work place"
+          taskType:
+            definitions: "task's work place"
             type: string
             example: work
             enum: ['work', 'home', 'personal']
             default: 'personal'
           photo:
-            description: "Contact's photo to download"
+            description: "task's photo to download"
             type: string
             format: binary
             example: "https://res.cloudinary.com/dzcis7rfr/image/upload/v1723708555/yikknimm…"
 responses:
   '200':
-    description: Change a contact
+    description: Change a task
     content:
       application/json:
         schema:
@@ -66,10 +66,10 @@ responses:
               example: 200
             message:
               type: string
-              example: Successfully changed a contact!
+              example: Successfully changed a task!
             data:
               type: object
-              $ref: ..\..\..\components\schemas\contacts.yaml
+              $ref: ..\..\..\components\schemas\tasks.yaml
   '404':
     $ref: ..\..\..\components\responses\404.yaml
 

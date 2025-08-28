@@ -1,8 +1,8 @@
 tags:
-  - Contacts
-summary: Create contact
-operationId: createContact
-description: 'Create a contact with payload'
+  - Tasks
+summary: Create task
+operationId: createTask
+description: 'Create a task with payload'
 security:
   - bearerAuth: []
 requestBody:
@@ -13,7 +13,7 @@ requestBody:
         required:
           - name
           - phoneNumber
-          - contactType
+          - taskType
 
         properties:
           name:
@@ -22,12 +22,12 @@ requestBody:
             example: dddhh aayyz
 
           phoneNumber:
-            definitions: "contact's phone number"
+            definitions: "task's phone number"
             type: string
             example: +380000000002
 
           email:
-            definitions: "contact's phone number"
+            definitions: "task's phone number"
             type: string
             example: "qwee3@example.com"
 
@@ -36,8 +36,8 @@ requestBody:
             type: boolean
             example: false
 
-          contactType:
-            definitions: "Contact's work place"
+          taskType:
+            definitions: "task's work place"
             type: string
             example: work
             enum: ['work', 'home', 'personal']
@@ -49,7 +49,7 @@ requestBody:
             example: "https://res.cloudinary.com/dzcis7rfr/image/upload/v1723708555"
 responses:
   '201':
-    description: Creates a contact
+    description: Creates a task
     content:
       application/json:
         schema:
@@ -64,9 +64,9 @@ responses:
               example: 201
             message:
               type: string
-              example: Successfully created a contact!
+              example: Successfully created a task!
             data:
               type: object
-              $ref: ..\..\components\schemas\contacts.yaml
+              $ref: ..\..\components\schemas\tasks.yaml
   '404':
     $ref: '../../components/responses/404.yaml'

@@ -19,19 +19,19 @@ import { checkRoles } from '../middlewares/checkRoles.js';
 import { ROLES } from '../constants/index.js';
 import { upload } from '../middlewares/multer.js';
 
-const router = Router();
+const tasksRouter = Router();
 // const jsonParser = express.json();
 
-router.use(authenticate);
+tasksRouter.use(authenticate);
 
-// router.get('/', ctrlWrapper(getTasksController));
- router.get('/', (req, res) => {
-   res.json({
-     message: 'this is tasks!',
-   });
- });
+tasksRouter.get('/', ctrlWrapper(getTasksController));
+//  tasksRouter.get('/', (req, res) => {
+//    res.json({
+//      message: 'this is tasks!',
+//    });
+//  });
 
-router.get(
+tasksRouter.get(
   '/:taskId',
 
   checkRoles(ROLES.AUTOR),
@@ -39,19 +39,19 @@ router.get(
   ctrlWrapper(getTaskIDController),
 );
 
-router.post(
+tasksRouter.post(
   '/',
   upload.single('photo'),
   validateBody(schemaTaskPost),
   ctrlWrapper(createTaskController),
 );
-router.delete(
+tasksRouter.delete(
   '/:taskId',
   isValidID,
   checkRoles(ROLES.AUTOR),
   ctrlWrapper(deleteTaskController),
 );
-router.patch(
+tasksRouter.patch(
   '/:taskId',
 
   upload.single('photo'),
@@ -60,4 +60,4 @@ router.patch(
   ctrlWrapper(changeTaskController),
 );
 
-export default router;
+export default tasksRouter;

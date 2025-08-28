@@ -1,7 +1,7 @@
 tags:
-  - Contacts
-summary: Get all contacts
-operationId: getContactsController
+  - Tasks
+summary: Get all Tasks
+operationId: getTasksController
 description: 'Get list of users with this endpoint'
 security:
   - bearerAuth: []
@@ -21,7 +21,7 @@ parameters:
     schema:
       type: string
       example: 'sortOrder'
-    description: "All contact's fields. Default value - _id"
+    description: "All Task's fields. Default value - _id"
   - in: query
     name: sortOrder
     schema:
@@ -29,14 +29,14 @@ parameters:
       enum: ['asc', 'desc']
       example: 'asc'
   - in: query
-    name:  contactType
+    name:  taskType
     schema:
       type: string
       enum: ['work', 'home', 'personal']
       example: work
 responses:
   '200':
-    description: Successfully found Contacts!
+    description: Successfully found Tasks!
     content:
       application/json:
         schema:
@@ -51,7 +51,7 @@ responses:
               example: 200
             message:
               type: string
-              example: Successfully found Contacts!
+              example: Successfully found Tasks!
             data:
               type: object
               required:
@@ -66,7 +66,7 @@ responses:
                 data:
                   type: array
                   items:
-                    $ref: '../../components/schemas/contacts.yaml'
+                    $ref: '../../components/schemas/tasks.yaml'
                 page:
                   type: number
                   example: 2
