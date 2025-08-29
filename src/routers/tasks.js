@@ -17,7 +17,6 @@ import { isValidID } from '../middlewares/isValidId.js';
 import { authenticate } from '../middlewares/authenticate.js';
 import { checkRoles } from '../middlewares/checkRoles.js';
 import { ROLES } from '../constants/index.js';
-import { upload } from '../middlewares/multer.js';
 
 const tasksRouter = Router();
 // const jsonParser = express.json();
@@ -25,36 +24,32 @@ const tasksRouter = Router();
 tasksRouter.use(authenticate);
 
 tasksRouter.get('/', ctrlWrapper(getTasksController));
-//  tasksRouter.get('/', (req, res) => {
-//    res.json({
-//      message: 'this is tasks!',
-//    });
-//  });
 
 tasksRouter.get(
   '/:taskId',
-
-  checkRoles(ROLES.AUTOR),
+  authenticate,
   isValidID,
+  checkRoles(ROLES.AUTOR),
   ctrlWrapper(getTaskIDController),
 );
 
 tasksRouter.post(
   '/',
-  upload.single('photo'),
   validateBody(schemaTaskPost),
   ctrlWrapper(createTaskController),
 );
+
+
 tasksRouter.delete(
   '/:taskId',
+  authenticate,
   isValidID,
   checkRoles(ROLES.AUTOR),
   ctrlWrapper(deleteTaskController),
 );
+
 tasksRouter.patch(
   '/:taskId',
-
-  upload.single('photo'),
   checkRoles(ROLES.AUTOR),
   validateBody(schemaTaskPatch),
   ctrlWrapper(changeTaskController),

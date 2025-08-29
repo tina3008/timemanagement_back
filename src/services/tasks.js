@@ -52,9 +52,16 @@ function createTask  (task)  {
  return TasksCollection.create(task);
 };
 
+// function deleteTask(taskId, userId) {
+//   return TasksCollection.findOneAndDelete({ _id: taskId, userId });
+// };
 function deleteTask(taskId, userId) {
+  console.log('service taskId, userId', taskId, userId);
+
   return TasksCollection.findOneAndDelete({ _id: taskId, userId });
-};
+
+}
+
 
 const patchTask = async (taskId, userId, payload, options ) => {
   const rawResult = await TasksCollection.findOneAndUpdate(

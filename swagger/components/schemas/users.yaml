@@ -7,7 +7,7 @@ required:
   - role
 properties:
     _id:
-      definitions: "Task's ID"
+      definitions: "User's ID"
       type: string
       example: 6692528c222b4be7b4b17ebd
     name:

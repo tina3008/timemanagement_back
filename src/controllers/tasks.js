@@ -9,9 +9,6 @@ import createHttpError from 'http-errors';
 import { parsePaginationParams } from '../utils/parsePaginationParams.js';
 import { parseSortParams } from '../utils/parseSortParams.js';
 import { parseFilterParams } from '../utils/parseFilterParams.js';
-import { saveFileToUploadDir } from '../utils/saveFileToUploadDir.js';
-import { saveFileToCloudinary } from '../utils/saveFileToCloudinary.js';
-import { env } from '../utils/env.js';
 
 export const getTasksController = async (req, res) => {
   const { page, perPage } = parsePaginationParams(req.query);
@@ -36,6 +33,7 @@ export const getTasksController = async (req, res) => {
 
 export const getTaskIDController = async (req, res, next) => {
   const { taskId } = req.params;
+  console.log('taskId:', taskId, 'req.user:', req.user);
   const task = await getTaskById(taskId, req.user._id);
 
   if (!task) {
@@ -67,8 +65,21 @@ export const createTaskController = async (req, res) => {
   });
 };
 
+// export const deleteTaskController = async (req, res) => {
+//   const { taskId } = req.params;
+// console.log('taskId:', taskId, 'req.user---:', req.user._id);
+//   const task = await deleteTask(taskId, req.user._id);
+
+//   if (!task) {
+//     throw createHttpError(404, 'Task not found');
+//   }
+
+//   res.status(204).send();
+// };
+
 export const deleteTaskController = async (req, res) => {
   const { taskId } = req.params;
+
 
   const task = await deleteTask(taskId, req.user._id);
 

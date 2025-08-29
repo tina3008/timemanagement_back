@@ -1,0 +1,47 @@
+tags:
+  - Notes
+summary: Change Note by ID
+operationId: ChangeNote
+description: 'Change a Note by ID'
+security:
+  - bearerAuth: []
+parameters:
+  - in: path
+    name: id
+    required: true
+    schema:
+      type: string
+      example: 6692528c222b4be7b4b17ebd
+requestBody:
+  content:
+    multipart/form-data:
+      schema:
+        type: object
+        properties:
+          note:
+            definitions: "Note name"
+            type: string
+            example: dddhh aayyz
+responses:
+  '200':
+    description: Change a Note
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - status
+            - message
+            - data
+          properties:
+            status:
+              type: integer
+              example: 200
+            message:
+              type: string
+              example: Successfully changed a Note!
+            data:
+              type: object
+              $ref: ..\..\..\components\schemas\notes.yaml
+  '404':
+    $ref: ..\..\..\components\responses\404.yaml

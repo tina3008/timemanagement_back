@@ -1,35 +1,3 @@
-// import Joi from 'joi';
-
-// export const schemaTaskPost = Joi.object({
-//   task: Joi.string().min(3).max(200).required().messages({
-//     'string.empty': 'Task is a required field',
-//     'string.min': 'Task must has 3 simvols',
-//     'string.max': 'Task too long',
-//   }),
-
-//   timeDeclaration: Joi.number().integer().min(1).required().messages({
-//     'number.base': 'Time must be number',
-//     'number.min': 'minimum time — 1',
-//     'any.required': 'Time is a required field',
-//   }),
-//   taskType: Joi.string().valid('work', 'home', 'personal').required().messages({
-//     'any.only': 'Type can be work, home or personal',
-//     'any.required': 'Type is a required field',
-//   }),
-//   date: Joi.date().required().messages({
-//     'date.base': 'Date must be a valid date',
-//     'any.required': 'Date is a required field',
-//   }),
-//   userId: Joi.string()
-//     .regex(/^[0-9a-fA-F]{24}$/)
-//     .required()
-//     .messages({
-//       'any.required': 'userId is requared',
-//     }),
-// });
-
-
-
 import Joi from 'joi';
 
 export const schemaTaskPost = Joi.object({

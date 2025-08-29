@@ -1,8 +1,8 @@
-taskRouterTaskstags:
-  - Tasks
-summary: Delete task
-operationId: deleteTask
-description: 'Delete a task from DB'
+resurseRouterResursestags:
+  - Resurses
+summary: Delete resurse
+operationId: delete Resurse
+description: 'Delete a resurse from DB'
 security:
   - bearerAuth: []
 parameters:
@@ -14,7 +14,6 @@ parameters:
       example: 6692528c222b4be7b4b17ebd
 responses:
   '204':
-    description: 'Delete task by id'
+    description: 'Delete resurse by id'
   '404':
     $ref: ..\..\..\components\responses\404.yaml
-

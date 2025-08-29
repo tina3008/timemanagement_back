@@ -2,9 +2,13 @@ import { model, Schema } from 'mongoose';
 
 const resursesSchema = new Schema(
   {
-    resurs: {
+    resurse: {
       type: String,
     },
+    category: {
+      type: String,
+    },
+
     userId: {
       type: Schema.Types.ObjectId,
       ref: 'User',

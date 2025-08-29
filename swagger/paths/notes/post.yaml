@@ -1,0 +1,47 @@
+tags:
+  - Notes
+summary: Create note
+operationId: createNote
+description: 'Create a note with payload'
+security:
+  - bearerAuth: []
+requestBody:
+  content:
+    multipart/form-data:
+      schema:
+        type: object
+        required:
+          - note
+
+
+        properties:
+          note:
+            definitions: "note name"
+            type: string
+            example: dddhh aayyz
+
+
+
+responses:
+  '201':
+    description: Creates a note
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - status
+            - message
+            - data
+          properties:
+            status:
+              type: integer
+              example: 201
+            message:
+              type: string
+              example: Successfully created a note!
+            data:
+              type: object
+              $ref: ..\..\components\schemas\notes.yaml
+  '404':
+    $ref: '../../components/responses/404.yaml'

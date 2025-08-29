@@ -2,25 +2,25 @@
   "openapi": "3.1.0",
   "info": {
     "version": "1.0.0",
-    "title": "Contactts",
+    "title": "Taskts",
     "license": {
       "name": "Apache 2.0",
       "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
     },
-    "description": "This is contact app"
+    "description": "This is Task app"
   },
   "servers": [
     {
       "url": "http://localhost:3000"
     },
     {
-      "url": "https://nodejs-hw-mongodb-4-3qmt.onrender.com/"
+      "url": "https://timemanagement-back.onrender.com"
     }
   ],
   "tags": [
     {
-      "name": "Contacts",
-      "description": "Operation with contacts"
+      "name": "Tasks",
+      "description": "Operation with Tasks"
     },
     {
       "name": "Auth",
@@ -28,13 +28,13 @@
     }
   ],
   "paths": {
-    "/contacts": {
+    "/tasks": {
       "get": {
         "tags": [
-          "Contacts"
+          "Tasks"
         ],
-        "summary": "Get all contacts",
-        "operationId": "getContactsController",
+        "summary": "Get all Tasks",
+        "operationId": "getTasksController",
         "description": "Get list of users with this endpoint",
         "security": [
           {
@@ -65,7 +65,7 @@
               "type": "string",
               "example": "sortOrder"
             },
-            "description": "All contact's fields. Default value - _id"
+            "description": "All Task's fields. Default value - _id"
           },
           {
             "in": "query",
@@ -81,7 +81,7 @@
           },
           {
             "in": "query",
-            "name": "contactType",
+            "name": "taskType",
             "schema": {
               "type": "string",
               "enum": [
@@ -95,7 +95,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Successfully found Contacts!",
+            "description": "Successfully found Tasks!",
             "content": {
               "application/json": {
                 "schema": {
@@ -112,7 +112,7 @@
                     },
                     "message": {
                       "type": "string",
-                      "example": "Successfully found Contacts!"
+                      "example": "Successfully found Tasks!"
                     },
                     "data": {
                       "type": "object",
@@ -129,7 +129,7 @@
                         "data": {
                           "type": "array",
                           "items": {
-                            "$ref": "#/components/schemas/contacts"
+                            "$ref": "#/components/schemas/tasks"
                           }
                         },
                         "page": {
@@ -170,11 +170,11 @@
       },
       "post": {
         "tags": [
-          "Contacts"
+          "Tasks"
         ],
-        "summary": "Create contact",
-        "operationId": "createContact",
-        "description": "Create a contact with payload",
+        "summary": "Create task",
+        "operationId": "createTask",
+        "description": "Create a task with payload",
         "security": [
           {
             "bearerAuth": []
@@ -186,33 +186,35 @@
               "schema": {
                 "type": "object",
                 "required": [
-                  "name",
-                  "phoneNumber",
-                  "contactType"
+                  "task",
+                  "timeDeclaration",
+                  "taskType",
+                  "date",
+                  "status"
                 ],
                 "properties": {
-                  "name": {
-                    "definitions": "full name",
+                  "task": {
+                    "definitions": "task name",
                     "type": "string",
                     "example": "dddhh aayyz"
                   },
-                  "phoneNumber": {
-                    "definitions": "contact's phone number",
-                    "type": "string",
-                    "example": 380000000002
+                  "timeDeclaration": {
+                    "definitions": "task's time, min",
+                    "type": "number",
+                    "example": 120
                   },
-                  "email": {
-                    "definitions": "contact's phone number",
-                    "type": "string",
-                    "example": "qwee3@example.com"
+                  "date": {
+                    "definitions": "task's date & time",
+                    "type": "date",
+                    "example": "2025-09-10T18:10:00.000+00:10"
                   },
                   "isFavourite": {
                     "definitions": "Would you like or not?",
                     "type": "boolean",
                     "example": false
                   },
-                  "contactType": {
-                    "definitions": "Contact's work place",
+                  "taskType": {
+                    "definitions": "task's work place",
                     "type": "string",
                     "example": "work",
                     "enum": [
@@ -222,11 +224,21 @@
                     ],
                     "default": "personal"
                   },
-                  "photo": {
-                    "description": "The file to upload",
+                  "status": {
+                    "definitions": "task's status",
                     "type": "string",
-                    "format": "binary",
-                    "example": "https://res.cloudinary.com/dzcis7rfr/image/upload/v1723708555"
+                    "example": "pending",
+                    "enum": [
+                      "completed",
+                      "pending",
+                      "working"
+                    ],
+                    "default": "personal"
+                  },
+                  "timeReal": {
+                    "definitions": "task's time, min",
+                    "type": "number",
+                    "example": 120
                   }
                 }
               }
@@ -235,7 +247,7 @@
         },
         "responses": {
           "201": {
-            "description": "Creates a contact",
+            "description": "Creates a task",
             "content": {
               "application/json": {
                 "schema": {
@@ -252,11 +264,11 @@
                     },
                     "message": {
                       "type": "string",
-                      "example": "Successfully created a contact!"
+                      "example": "Successfully created a task!"
                     },
                     "data": {
                       "type": "object",
-                      "$ref": "#/components/schemas/contacts"
+                      "$ref": "#/components/schemas/tasks"
                     }
                   }
                 }
@@ -269,14 +281,14 @@
         }
       }
     },
-    "/contacts/{id}": {
+    "/tasks/{id}": {
       "get": {
         "tags": [
-          "Contacts"
+          "Tasks"
         ],
-        "summary": "Get scontact by id",
-        "operationId": "getContactIDController",
-        "description": "Get contact by id",
+        "summary": "Get stask by id",
+        "operationId": "getTaskIDController",
+        "description": "Get Task by id",
         "security": [
           {
             "bearerAuth": []
@@ -295,7 +307,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Get contact by id",
+            "description": "Get Task by id",
             "content": {
               "application/json": {
                 "schema": {
@@ -312,11 +324,11 @@
                     },
                     "message": {
                       "type": "string",
-                      "example": "Successfully found contact with id 6692528c222b4be7b4b17ebd!"
+                      "example": "Successfully found Task with id 6692528c222b4be7b4b17ebd!"
                     },
                     "data": {
                       "type": "object",
-                      "$ref": "#/components/schemas/contacts"
+                      "$ref": "#/components/schemas/tasks"
                     }
                   }
                 }
@@ -329,12 +341,12 @@
         }
       },
       "delete": {
-        "tags": [
-          "Contacts"
+        "taskRouterTaskstags": [
+          "Tasks"
         ],
-        "summary": "Delete contact",
-        "operationId": "deleteContact",
-        "description": "Delete a contact from DB",
+        "summary": "Delete task",
+        "operationId": "deleteTask",
+        "description": "Delete a task from DB",
         "security": [
           {
             "bearerAuth": []
@@ -353,7 +365,7 @@
         ],
         "responses": {
           "204": {
-            "description": "Delete contact by id"
+            "description": "Delete task by id"
           },
           "404": {
             "$ref": "#/components/responses/404"
@@ -362,11 +374,11 @@
       },
       "patch": {
         "tags": [
-          "Contacts"
+          "Tasks"
         ],
-        "summary": "Change contact by ID",
-        "operationId": "ChangeContact",
-        "description": "Change a contact by ID",
+        "summary": "Change task by ID",
+        "operationId": "ChangeTask",
+        "description": "Change a task by ID",
         "security": [
           {
             "bearerAuth": []
@@ -389,28 +401,28 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "name": {
-                    "definitions": "full name",
+                  "task": {
+                    "definitions": "task name",
                     "type": "string",
                     "example": "dddhh aayyz"
                   },
-                  "phoneNumber": {
-                    "definitions": "contact's phone number",
-                    "type": "string",
-                    "example": 380000000002
+                  "timeDeclaration": {
+                    "definitions": "task's time, min",
+                    "type": "number",
+                    "example": 120
                   },
-                  "email": {
-                    "definitions": "contact's phone number",
-                    "type": "string",
-                    "example": "qwee3@example.com"
+                  "date": {
+                    "definitions": "task's date & time",
+                    "type": "date",
+                    "example": "2025-09-10T18:10:00.000+00:10"
                   },
                   "isFavourite": {
                     "definitions": "Would you like or not?",
                     "type": "boolean",
                     "example": false
                   },
-                  "contactType": {
-                    "definitions": "Contact's work place",
+                  "taskType": {
+                    "definitions": "task's work place",
                     "type": "string",
                     "example": "work",
                     "enum": [
@@ -420,11 +432,21 @@
                     ],
                     "default": "personal"
                   },
-                  "photo": {
-                    "description": "Contact's photo to download",
+                  "status": {
+                    "definitions": "task's status",
                     "type": "string",
-                    "format": "binary",
-                    "example": "https://res.cloudinary.com/dzcis7rfr/image/upload/v1723708555/yikknimm…"
+                    "example": "pending",
+                    "enum": [
+                      "completed",
+                      "pending",
+                      "working"
+                    ],
+                    "default": "personal"
+                  },
+                  "timeReal": {
+                    "definitions": "task's time, min",
+                    "type": "number",
+                    "example": 120
                   }
                 }
               }
@@ -433,7 +455,7 @@
         },
         "responses": {
           "200": {
-            "description": "Change a contact",
+            "description": "Change a task",
             "content": {
               "application/json": {
                 "schema": {
@@ -450,11 +472,754 @@
                     },
                     "message": {
                       "type": "string",
-                      "example": "Successfully changed a contact!"
+                      "example": "Successfully changed a task!"
                     },
                     "data": {
                       "type": "object",
-                      "$ref": "#/components/schemas/contacts"
+                      "$ref": "#/components/schemas/tasks"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
+          }
+        }
+      }
+    },
+    "/note": {
+      "get": {
+        "tags": [
+          "Notes"
+        ],
+        "summary": "Get all Notes",
+        "operationId": "getNotesController",
+        "description": "Get list of users with this endpoint",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "integer"
+            },
+            "example": 1
+          },
+          {
+            "in": "query",
+            "name": "perPage",
+            "schema": {
+              "type": "integer",
+              "example": 10
+            }
+          },
+          {
+            "in": "query",
+            "name": "sortBy",
+            "schema": {
+              "type": "string",
+              "example": "sortOrder"
+            },
+            "description": "All Note's fields. Default value - _id"
+          },
+          {
+            "in": "query",
+            "name": "sortOrder",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "asc",
+                "desc"
+              ],
+              "example": "asc"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully found Notes!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "message",
+                    "data"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 200
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Successfully found Notes!"
+                    },
+                    "data": {
+                      "type": "object",
+                      "required": [
+                        "data",
+                        "page",
+                        "perPage",
+                        "totalItems",
+                        "totalPages",
+                        "hasNextPage",
+                        "hasPreviousPage"
+                      ],
+                      "properties": {
+                        "data": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/notes"
+                          }
+                        },
+                        "page": {
+                          "type": "number",
+                          "example": 2
+                        },
+                        "perPage": {
+                          "type": "number",
+                          "example": 4
+                        },
+                        "totalItems": {
+                          "type": "number",
+                          "example": 4
+                        },
+                        "totalPages": {
+                          "type": "number",
+                          "example": 4
+                        },
+                        "hasNextPage": {
+                          "type": "boolean",
+                          "example": false
+                        },
+                        "hasPreviousPage": {
+                          "type": "boolean",
+                          "example": true
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Notes"
+        ],
+        "summary": "Create note",
+        "operationId": "createNote",
+        "description": "Create a note with payload",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "note"
+                ],
+                "properties": {
+                  "note": {
+                    "definitions": "note name",
+                    "type": "string",
+                    "example": "dddhh aayyz"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Creates a note",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "message",
+                    "data"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 201
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Successfully created a note!"
+                    },
+                    "data": {
+                      "type": "object",
+                      "$ref": "#/components/schemas/notes"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
+          }
+        }
+      }
+    },
+    "/note/{id}": {
+      "get": {
+        "tags": [
+          "Notes"
+        ],
+        "summary": "Get Note by id",
+        "operationId": "getNoteIDController",
+        "description": "Get Note by id",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "6692528c222b4be7b4b17ebd"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Get Note by id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "message",
+                    "data"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 200
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Successfully found Note with id 6692528c222b4be7b4b17ebd!"
+                    },
+                    "data": {
+                      "type": "object",
+                      "$ref": "#/components/schemas/notes"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
+          }
+        }
+      },
+      "delete": {
+        "noteRouterNotestags": [
+          "Notes"
+        ],
+        "summary": "Delete note",
+        "operationId": "deleteNote",
+        "description": "Delete a note from DB",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "6692528c222b4be7b4b17ebd"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Delete note by id"
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Notes"
+        ],
+        "summary": "Change Note by ID",
+        "operationId": "ChangeNote",
+        "description": "Change a Note by ID",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "6692528c222b4be7b4b17ebd"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "note": {
+                    "definitions": "Note name",
+                    "type": "string",
+                    "example": "dddhh aayyz"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Change a Note",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "message",
+                    "data"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 200
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Successfully changed a Note!"
+                    },
+                    "data": {
+                      "type": "object",
+                      "$ref": "#/components/schemas/notes"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
+          }
+        }
+      }
+    },
+    "/resurse": {
+      "get": {
+        "tags": [
+          "resurses"
+        ],
+        "summary": "Get all resurses",
+        "operationId": "getResursesController",
+        "description": "Get list of users with this endpoint",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "integer"
+            },
+            "example": 1
+          },
+          {
+            "in": "query",
+            "name": "perPage",
+            "schema": {
+              "type": "integer",
+              "example": 10
+            }
+          },
+          {
+            "in": "query",
+            "name": "sortBy",
+            "schema": {
+              "type": "string",
+              "example": "sortOrder"
+            },
+            "description": "All resurse's fields. Default value - _id"
+          },
+          {
+            "in": "query",
+            "name": "sortOrder",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "asc",
+                "desc"
+              ],
+              "example": "asc"
+            }
+          },
+          {
+            "in": "query",
+            "name": "resurseType",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "work",
+                "home",
+                "personal"
+              ],
+              "example": "work"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully found resurses!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "message",
+                    "data"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 200
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Successfully found resurses!"
+                    },
+                    "data": {
+                      "type": "object",
+                      "required": [
+                        "data",
+                        "page",
+                        "perPage",
+                        "totalItems",
+                        "totalPages",
+                        "hasNextPage",
+                        "hasPreviousPage"
+                      ],
+                      "properties": {
+                        "data": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/resurses"
+                          }
+                        },
+                        "page": {
+                          "type": "number",
+                          "example": 2
+                        },
+                        "perPage": {
+                          "type": "number",
+                          "example": 4
+                        },
+                        "totalItems": {
+                          "type": "number",
+                          "example": 4
+                        },
+                        "totalPages": {
+                          "type": "number",
+                          "example": 4
+                        },
+                        "hasNextPage": {
+                          "type": "boolean",
+                          "example": false
+                        },
+                        "hasPreviousPage": {
+                          "type": "boolean",
+                          "example": true
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Resurses"
+        ],
+        "summary": "Create resurse",
+        "operationId": "createResurse",
+        "description": "Create a resurse with payload",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "resurse"
+                ],
+                "properties": {
+                  "resurse": {
+                    "definitions": "resurse's name",
+                    "type": "string",
+                    "example": "dddhh aayyz"
+                  },
+                  "category": {
+                    "definitions": "category name",
+                    "type": "string",
+                    "example": "favorite"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Creates a resurse",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "message",
+                    "data"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 201
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Successfully created a resurse!"
+                    },
+                    "data": {
+                      "type": "object",
+                      "$ref": "#/components/schemas/resurses"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
+          }
+        }
+      }
+    },
+    "/resurse/{id}": {
+      "get": {
+        "tags": [
+          "Resurses"
+        ],
+        "summary": "Get resurse by id",
+        "operationId": "getResurseIDController",
+        "description": "Get resurse by id",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "6692528c222b4be7b4b17ebd"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Get resurse by id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "message",
+                    "data"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 200
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Successfully found resurse with id 6692528c222b4be7b4b17ebd!"
+                    },
+                    "data": {
+                      "type": "object",
+                      "$ref": "#/components/schemas/resurses"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
+          }
+        }
+      },
+      "delete": {
+        "resurseRouterResursestags": [
+          "Resurses"
+        ],
+        "summary": "Delete resurse",
+        "operationId": "delete Resurse",
+        "description": "Delete a resurse from DB",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "6692528c222b4be7b4b17ebd"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Delete resurse by id"
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Resurses"
+        ],
+        "summary": "Change resurse by ID",
+        "operationId": "ChangeResurse",
+        "description": "Change a resurse by ID",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "6692528c222b4be7b4b17ebd"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "resurse": {
+                    "definitions": "resurse name",
+                    "type": "string",
+                    "example": "dddhh aayyz"
+                  },
+                  "category": {
+                    "definitions": "category name",
+                    "type": "string",
+                    "example": "favorite"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Change a resurse",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "message",
+                    "data"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 200
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Successfully changed a resurse!"
+                    },
+                    "data": {
+                      "type": "object",
+                      "$ref": "#/components/schemas/resurses"
                     }
                   }
                 }
@@ -1029,43 +1794,46 @@
       }
     },
     "schemas": {
-      "contacts": {
+      "tasks": {
         "type": "object",
         "required": [
           "_id",
-          "name",
-          "phoneNumber",
-          "contactType",
+          "task",
+          "timeDeclaration",
+          "timeReal",
+          "taskType",
+          "date",
+          "status",
           "userId"
         ],
         "properties": {
           "_id": {
-            "definitions": "Contact's ID",
+            "definitions": "task's ID",
             "type": "string",
             "example": "6692528c222b4be7b4b17ebd"
           },
-          "name": {
-            "definitions": "full name",
+          "task": {
+            "definitions": "task",
             "type": "string",
             "example": "dddhh aayyz"
           },
-          "phoneNumber": {
-            "definitions": "contact's phone number",
-            "type": "string",
-            "example": 380000000002
+          "timeDeclaration": {
+            "definitions": "120",
+            "type": "number",
+            "example": 120
           },
-          "email": {
-            "definitions": "contact's email",
-            "type": "string",
-            "example": "qwee3@example.com"
+          "timeReal": {
+            "definitions": "120",
+            "type": "number",
+            "example": 120
           },
           "isFavourite": {
             "definitions": "Would you like or not?",
             "type": "boolean",
             "example": false
           },
-          "contactType": {
-            "definitions": "Contact's work place",
+          "taskType": {
+            "definitions": "task's work place",
             "type": "string",
             "example": "work",
             "enum": [
@@ -1076,14 +1844,95 @@
             "default": "personal"
           },
           "userId": {
-            "definitions": "Autorth's contact ID",
+            "definitions": "Autorth's task ID",
             "type": "string",
             "example": "6692528c222b4be7b4b17ebd"
           },
-          "photo": {
-            "description": "Link to contact's photo",
+          "date": {
+            "definitions": "date",
+            "type": "date",
+            "example": "2025-09-13T18:10:00.000Z"
+          },
+          "status": {
+            "definitions": "task's status",
             "type": "string",
-            "format": "binary"
+            "example": "pending",
+            "enum": [
+              "completed",
+              "pending",
+              "working"
+            ],
+            "default": "pending"
+          }
+        }
+      },
+      "notes": {
+        "type": "object",
+        "required": [
+          "_id",
+          "note",
+          "userId"
+        ],
+        "properties": {
+          "_id": {
+            "definitions": "note's ID",
+            "type": "string",
+            "example": "6692528c222b4be7b4b17ebd"
+          },
+          "note": {
+            "definitions": "note",
+            "type": "string",
+            "example": "dddhh aayyz"
+          },
+          "timeDeclaration": {
+            "definitions": "120",
+            "type": "number",
+            "example": 120
+          },
+          "timeReal": {
+            "definitions": "120",
+            "type": "number",
+            "example": 120
+          },
+          "isFavourite": {
+            "definitions": "Would you like or not?",
+            "type": "boolean",
+            "example": false
+          },
+          "userId": {
+            "definitions": "Autorth's note ID",
+            "type": "string",
+            "example": "6692528c222b4be7b4b17ebd"
+          }
+        }
+      },
+      "resurses": {
+        "type": "object",
+        "required": [
+          "_id",
+          "resurse",
+          "userId"
+        ],
+        "properties": {
+          "_id": {
+            "definitions": "resurse's ID",
+            "type": "string",
+            "example": "6692528c222b4be7b4b17ebd"
+          },
+          "resurse": {
+            "definitions": "resurse",
+            "type": "string",
+            "example": "dddhh aayyz"
+          },
+          "category": {
+            "definitions": "favorite",
+            "type": "string",
+            "example": "favorite"
+          },
+          "userId": {
+            "definitions": "Autorth's resurse ID",
+            "type": "string",
+            "example": "6692528c222b4be7b4b17ebd"
           }
         }
       },
@@ -1137,7 +1986,7 @@
         ],
         "properties": {
           "_id": {
-            "definitions": "Contact's ID",
+            "definitions": "User's ID",
             "type": "string",
             "example": "6692528c222b4be7b4b17ebd"
           },

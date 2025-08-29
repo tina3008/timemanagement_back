@@ -1,0 +1,34 @@
+type: object
+required:
+  - _id
+  - note
+  - userId
+properties:
+  _id:
+    definitions: "note's ID"
+    type: string
+    example: 6692528c222b4be7b4b17ebd
+  note:
+    definitions: 'note'
+    type: string
+    example: dddhh aayyz
+
+  timeDeclaration:
+    definitions: '120'
+    type: number
+    example: 120
+
+  timeReal:
+    definitions: '120'
+    type: number
+    example: 120
+
+  isFavourite:
+    definitions: 'Would you like or not?'
+    type: boolean
+    example: false
+
+  userId:
+    definitions: "Autorth's note ID"
+    type: string
+    example: 6692528c222b4be7b4b17ebd

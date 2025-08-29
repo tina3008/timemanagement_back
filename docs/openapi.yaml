@@ -1,34 +1,61 @@
 openapi: 3.1.0
 info:
   version: 1.0.0
-  title: Contactts
+  title: Taskts
   license:
     name: Apache 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0.html
   description:
-   This is contact app
+   This is Task app
 tags:
-  - name: Contacts
-    description: Operation with contacts
+  - name: Tasks
+    description: Operation with Tasks
   - name: Auth
     description: Auth operations
 servers:
   - url: http://localhost:3000
-  - url: https://nodejs-hw-mongodb-4-3qmt.onrender.com/
+  - url: https://timemanagement-back.onrender.com
 paths:
 
-  /contacts:
+  /tasks:
     get:
-      $ref: ..\swagger\paths\contacts\get.yaml
+      $ref: ..\swagger\paths\tasks\get.yaml
     post:
-      $ref: ..\swagger\paths\contacts\post.yaml
-  /contacts/{id}:
+      $ref: ..\swagger\paths\tasks\post.yaml
+  /tasks/{id}:
     get:
-      $ref: ..\swagger\paths\contacts\{id}\get.yaml
+      $ref: ..\swagger\paths\tasks\{id}\get.yaml
     delete:
-      $ref: ..\swagger\paths\contacts\{id}\delete.yaml
+      $ref: ..\swagger\paths\tasks\{id}\delete.yaml
     patch:
-      $ref: ..\swagger\paths\contacts\{id}\patch.yaml
+      $ref: ..\swagger\paths\tasks\{id}\patch.yaml
+
+  /note:
+    get:
+      $ref: ..\swagger\paths\notes\get.yaml
+    post:
+      $ref: ..\swagger\paths\notes\post.yaml
+  /note/{id}:
+    get:
+      $ref: ..\swagger\paths\notes\{id}\get.yaml
+    delete:
+      $ref: ..\swagger\paths\notes\{id}\delete.yaml
+    patch:
+      $ref: ..\swagger\paths\notes\{id}\patch.yaml
+
+  /resurse:
+    get:
+      $ref: ..\swagger\paths\resurses\get.yaml
+    post:
+      $ref: ..\swagger\paths\resurses\post.yaml
+  /resurse/{id}:
+    get:
+      $ref: ..\swagger\paths\resurses\{id}\get.yaml
+    delete:
+      $ref: ..\swagger\paths\resurses\{id}\delete.yaml
+    patch:
+      $ref: ..\swagger\paths\resurses\{id}\patch.yaml
+
   /auth/confirm-auth:
     post:
       $ref: ..\swagger\paths\auth\confirm-oauth\post.yaml

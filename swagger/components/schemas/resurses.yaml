@@ -1,0 +1,26 @@
+type: object
+required:
+  - _id
+  - resurse
+  - userId
+properties:
+  _id:
+    definitions: "resurse's ID"
+    type: string
+    example: 6692528c222b4be7b4b17ebd
+  resurse:
+    definitions: 'resurse'
+    type: string
+    example: dddhh aayyz
+
+  category:
+    definitions: 'favorite'
+    type: string
+    example: favorite
+
+
+
+  userId:
+    definitions: "Autorth's resurse ID"
+    type: string
+    example: 6692528c222b4be7b4b17ebd

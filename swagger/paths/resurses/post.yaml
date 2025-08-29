@@ -1,0 +1,50 @@
+tags:
+  - Resurses
+summary: Create resurse
+operationId: createResurse
+description: 'Create a resurse with payload'
+security:
+  - bearerAuth: []
+requestBody:
+  content:
+    multipart/form-data:
+      schema:
+        type: object
+        required:
+          - resurse
+
+
+        properties:
+          resurse:
+            definitions: "resurse's name"
+            type: string
+            example: dddhh aayyz
+          category:
+            definitions: "category name"
+            type: string
+            example: favorite
+
+
+responses:
+  '201':
+    description: Creates a resurse
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - status
+            - message
+            - data
+          properties:
+            status:
+              type: integer
+              example: 201
+            message:
+              type: string
+              example: Successfully created a resurse!
+            data:
+              type: object
+              $ref: ..\..\components\schemas\resurses.yaml
+  '404':
+    $ref: '../../components/responses/404.yaml'

@@ -11,25 +11,27 @@ requestBody:
       schema:
         type: object
         required:
-          - name
-          - phoneNumber
+          - task
+          - timeDeclaration
           - taskType
+          - date
+          - status
 
         properties:
-          name:
-            definitions: "full name"
+          task:
+            definitions: "task name"
             type: string
             example: dddhh aayyz
 
-          phoneNumber:
-            definitions: "task's phone number"
-            type: string
-            example: +380000000002
+          timeDeclaration:
+            definitions: "task's time, min"
+            type: number
+            example: 120
 
-          email:
-            definitions: "task's phone number"
-            type: string
-            example: "qwee3@example.com"
+          date:
+            definitions: "task's date & time"
+            type: date
+            example: "2025-09-10T18:10:00.000+00:10"
 
           isFavourite:
             definitions: "Would you like or not?"
@@ -42,11 +44,17 @@ requestBody:
             example: work
             enum: ['work', 'home', 'personal']
             default: 'personal'
-          photo:
-            description: "The file to upload"
+          status:
+            definitions: "task's status"
             type: string
-            format: binary
-            example: "https://res.cloudinary.com/dzcis7rfr/image/upload/v1723708555"
+            example: pending
+            enum: ['completed', 'pending','working']
+            default: 'personal'
+          timeReal:
+            definitions: "task's time, min"
+            type: number
+            example: 120
+
 responses:
   '201':
     description: Creates a task
