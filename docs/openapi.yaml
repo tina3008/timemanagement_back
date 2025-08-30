@@ -22,6 +22,12 @@ paths:
       $ref: ..\swagger\paths\tasks\get.yaml
     post:
       $ref: ..\swagger\paths\tasks\post.yaml
+  /tasks/day:
+    get:
+      $ref: ..\swagger\paths\tasks\day\get.yaml
+  /tasks/month:
+    get:
+      $ref: ..\swagger\paths\tasks\month\get.yaml
   /tasks/{id}:
     get:
       $ref: ..\swagger\paths\tasks\{id}\get.yaml

@@ -6,13 +6,14 @@ import {
   createTaskController,
   deleteTaskController,
   changeTaskController,
+  // getMonthlyTasksController,
+  // getTodayTasksController,
+  getTasksByDay,
+  getTasksByMonth,
 } from '../controllers/tasks.js';
 import { ctrlWrapper } from '../middlewares/ctrlWrapper.js';
 import { validateBody } from '../middlewares/validateBody.js';
-import {
-  schemaTaskPost,
-  schemaTaskPatch,
-} from '../validation/tasks.js';
+import { schemaTaskPost, schemaTaskPatch } from '../validation/tasks.js';
 import { isValidID } from '../middlewares/isValidId.js';
 import { authenticate } from '../middlewares/authenticate.js';
 import { checkRoles } from '../middlewares/checkRoles.js';
@@ -25,6 +26,13 @@ tasksRouter.use(authenticate);
 
 tasksRouter.get('/', ctrlWrapper(getTasksController));
 
+tasksRouter.post(
+  '/',
+  validateBody(schemaTaskPost),
+  ctrlWrapper(createTaskController),
+);
+tasksRouter.get('/day', authenticate, ctrlWrapper(getTasksByDay));
+tasksRouter.get('/month', authenticate, ctrlWrapper(getTasksByMonth));
 tasksRouter.get(
   '/:taskId',
   authenticate,
@@ -32,13 +40,6 @@ tasksRouter.get(
   checkRoles(ROLES.AUTOR),
   ctrlWrapper(getTaskIDController),
 );
-
-tasksRouter.post(
-  '/',
-  validateBody(schemaTaskPost),
-  ctrlWrapper(createTaskController),
-);
-
 
 tasksRouter.delete(
   '/:taskId',
