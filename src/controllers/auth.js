@@ -6,9 +6,11 @@ import {
   requestResetToken,
   resetPassword,
   loginOrSignupWithGoogle,
+  getInfoUserService,
 } from '../services/auth.js';
 import { ONE_DAY } from '../constants/index.js';
 import { generateAuthUrl } from '../utils/googleOAuth2.js';
+import { log } from 'node:console';
 
 async function register(req, res) {
   const registeredUser = await registerUser(req.body);
@@ -130,4 +132,16 @@ export const loginWithGoogleController = async (req, res) => {
     },
   });
 };
+
+export const getInfoUserController = async (req, res) => {
+  const userId = req.user._id;
+  const user = await getInfoUserService(userId);
+console.log('userId---', userId);
+
+  res.status(200).json({
+    status: 200,
+    data: user,
+  });
+};
+
 export { register, login, logout };

@@ -184,4 +184,10 @@ export const loginOrSignupWithGoogle = async (code) => {
     userId: user._id,
     ...newSession,
   });
+ };
+export const getInfoUserService = (userId) => {
+  console.log('servise userId', userId);
+
+  return UsersCollection.findOne({ _id: userId });
 };
+
