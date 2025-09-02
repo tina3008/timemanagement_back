@@ -8,9 +8,13 @@ import {
   loginOrSignupWithGoogle,
   getInfoUserService,
 } from '../services/auth.js';
-import { ONE_DAY } from '../constants/index.js';
+// import { ONE_DAY } from '../constants/index.js';
 import { generateAuthUrl } from '../utils/googleOAuth2.js';
 import { log } from 'node:console';
+
+import { FIFTEEN_MINUTES, ONE_DAY } from '../constants/index.js';
+import { UsersCollection } from '../db/models/User.js';
+import { SessionsCollections } from '../db/models/Session.js';
 
 async function register(req, res) {
   const registeredUser = await registerUser(req.body);
@@ -29,26 +33,65 @@ async function register(req, res) {
   });
 }
 
+// async function login(req, res) {
+//   const session = await loginUser(req.body);
+
+//   res.cookie('refreshToken', session.refreshToken, {
+//     httpOnly: true,
+//     expires: new Date(Date.now() + ONE_DAY),
+//   });
+//   res.cookie('sessionId', session._id, {
+//     httpOnly: true,
+//     expires: new Date(Date.now() + ONE_DAY),
+//   });
+
+// res.json({
+//   status: 200,
+//   message: 'Successfully logged in a user!',
+//   data: {
+//     accessToken: session.accessToken,
+//   },
+// });
+// };
+
 async function login(req, res) {
   const session = await loginUser(req.body);
 
+  // refreshToken
   res.cookie('refreshToken', session.refreshToken, {
     httpOnly: true,
-    expires: new Date(Date.now() + ONE_DAY),
-  });
-  res.cookie('sessionId', session._id, {
-    httpOnly: true,
+    secure: true, // включить на https
+    sameSite: 'strict',
     expires: new Date(Date.now() + ONE_DAY),
   });
 
-res.json({
-  status: 200,
-  message: 'Successfully logged in a user!',
-  data: {
-    accessToken: session.accessToken,
-  },
-});
-};
+  // sessionId
+  res.cookie('sessionId', session._id, {
+    httpOnly: true,
+    secure: true,
+    sameSite: 'strict',
+    expires: new Date(Date.now() + ONE_DAY),
+  });
+
+  // accessToken тоже можно в куку
+  res.cookie('accessToken', session.accessToken, {
+    httpOnly: true,
+    secure: true,
+    sameSite: 'strict',
+    expires: new Date(Date.now() + FIFTEEN_MINUTES),
+  });
+
+  res.json({
+    status: 200,
+    message: 'Successfully logged in a user!',
+    user: {
+      id: session.userId,
+    },
+      data: {
+        accessToken: session.accessToken,
+      },
+  });
+}
 
 async function logout(req, res) {
   if (req.cookies.sessionId) {
@@ -145,3 +188,26 @@ console.log('userId---', userId);
 };
 
 export { register, login, logout };
+
+
+export const getCurrentUser = async (req, res) => {
+  const sessionId = req.cookies.sessionId;
+
+  if (!sessionId) {
+    return res.status(401).json({ message: 'Not authenticated' });
+  }
+
+  const session = await SessionsCollections.findById(sessionId).populate(
+    'userId',
+  );
+  if (!session) {
+    return res.status(401).json({ message: 'Session not found' });
+  }
+
+  const user = session.userId;
+
+   res.status(200).json({
+     status: 200,
+     data: user,
+   });
+};

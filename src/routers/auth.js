@@ -9,6 +9,7 @@ import {
   getGoogleOAuthUrlController,
   loginWithGoogleController,
   getInfoUserController,
+  getCurrentUser,
 } from '../controllers/auth.js';
 import { ctrlWrapper } from '../middlewares/ctrlWrapper.js';
 import {
@@ -31,6 +32,7 @@ router.post('/logout', ctrlWrapper(logout));
 
 router.post('/refresh', ctrlWrapper(refreshSessionController));
 router.get('/me', authenticate, ctrlWrapper(getInfoUserController));
+// router.get('/me', authenticate, ctrlWrapper(getCurrentUser));
 
 router.post(
   '/send-reset-email',
