@@ -21,36 +21,40 @@ import {
 } from '../validation/auth.js';
 import { validateBody } from '../middlewares/validateBody.js';
 import { authenticate } from '../middlewares/authenticate.js';
-const router = Router();
+const authRouter = Router();
 // const jsonParser = json();
 
-router.post('/register', validateBody(validUserSchema), ctrlWrapper(register));
+authRouter.post(
+  '/register',
+  validateBody(validUserSchema),
+  ctrlWrapper(register),
+);
 
-router.post('/login', validateBody(loginSchema), ctrlWrapper(login));
+authRouter.post('/login', validateBody(loginSchema), ctrlWrapper(login));
 
-router.post('/logout', ctrlWrapper(logout));
+authRouter.post('/logout', ctrlWrapper(logout));
 
-router.post('/refresh', ctrlWrapper(refreshSessionController));
-router.get('/me', authenticate, ctrlWrapper(getInfoUserController));
+authRouter.post('/refresh', ctrlWrapper(refreshSessionController));
+authRouter.get('/me', authenticate, ctrlWrapper(getInfoUserController));
 // router.get('/me', authenticate, ctrlWrapper(getCurrentUser));
 
-router.post(
+authRouter.post(
   '/send-reset-email',
   validateBody(requestResetEmailSchema),
   ctrlWrapper(requestResetEmailController),
 );
 
-router.post(
+authRouter.post(
   '/reset-pwd',
   validateBody(resetPasswordSchema),
   ctrlWrapper(resetPasswordController),
 );
 
-router.get('/get-oauth-url', ctrlWrapper(getGoogleOAuthUrlController));
+authRouter.get('/get-oauth-url', ctrlWrapper(getGoogleOAuthUrlController));
 
-router.post(
+authRouter.post(
   '/confirm-oauth',
   validateBody(loginWithGoogleOAuthSchema),
   ctrlWrapper(loginWithGoogleController),
 );
-export default router;
+export default authRouter;
