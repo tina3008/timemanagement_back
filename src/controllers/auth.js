@@ -167,6 +167,12 @@ export const loginWithGoogleController = async (req, res) => {
   const session = await loginOrSignupWithGoogle(req.body.code);
   setupSession(res, session);
 
+ res.cookie('accessToken', session.accessToken, {
+   httpOnly: true,
+   secure: process.env.NODE_ENV === 'production',
+   sameSite: 'lax', // нужно для Google redirect
+   maxAge: 7 * 24 * 60 * 60 * 1000, // 7 дней
+ });
   res.json({
     status: 200,
     message: 'Successfully logged in via Google OAuth!',
