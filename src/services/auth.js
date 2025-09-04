@@ -29,27 +29,6 @@ export const registerUser = async (payload) => {
   return UsersCollection.create(payload);
 };
 
-// export const loginUser = async (payload) => {
-//   const user = await UsersCollection.findOne({ email: payload.email });
-//   if (!user) {
-//     throw createHttpError(404, 'User not found');
-//   }
-//   const isEqual = await bcrypt.compare(payload.password, user.password);
-
-//   if (!isEqual) {
-//     throw createHttpError(401, 'Unauthorized');
-//   }
-//   await SessionsCollections.deleteOne({ userId: user._id });
-//   const accessToken = randomBytes(30).toString('base64');
-//   const refreshToken = randomBytes(30).toString('base64');
-//   return await SessionsCollections.create({
-//     userId: user._id,
-//     accessToken,
-//     refreshToken,
-//     accessTokenValidUntil: new Date(Date.now() + FIFTEEN_MINUTES),
-//     refreshTokenValidUntil: new Date(Date.now() + ONE_DAY),
-//   });
-// };
 
 export const loginUser = async ({ email, password }) => {
   const user = await UsersCollection.findOne({ email });
@@ -62,7 +41,6 @@ export const loginUser = async ({ email, password }) => {
     throw createHttpError(401, 'Unauthorized');
   }
 
-  // удаляем старые сессии (если нужно 1 юзер = 1 сессия)
   await SessionsCollections.deleteOne({ userId: user._id });
 
   const accessToken = randomBytes(30).toString('base64');

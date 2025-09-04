@@ -27,32 +27,11 @@ async function register(req, res) {
       name: registeredUser.name,
       email: registeredUser.email,
       id: registeredUser._id,
-      createdAt:registeredUser.createdAt,
-      updatedAt:registeredUser.updatedAt,
+      createdAt: registeredUser.createdAt,
+      updatedAt: registeredUser.updatedAt,
     },
   });
 }
-
-// async function login(req, res) {
-//   const session = await loginUser(req.body);
-
-//   res.cookie('refreshToken', session.refreshToken, {
-//     httpOnly: true,
-//     expires: new Date(Date.now() + ONE_DAY),
-//   });
-//   res.cookie('sessionId', session._id, {
-//     httpOnly: true,
-//     expires: new Date(Date.now() + ONE_DAY),
-//   });
-
-// res.json({
-//   status: 200,
-//   message: 'Successfully logged in a user!',
-//   data: {
-//     accessToken: session.accessToken,
-//   },
-// });
-// };
 
 async function login(req, res) {
   const session = await loginUser(req.body);
@@ -60,24 +39,29 @@ async function login(req, res) {
   // refreshToken
   res.cookie('refreshToken', session.refreshToken, {
     httpOnly: true,
-    secure: true, // включить на https
-    sameSite: 'strict',
+    // secure: true,
+    // sameSite: 'strict',
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: process.env.NODE_ENV === 'production' ? 'None' : 'Lax',
     expires: new Date(Date.now() + ONE_DAY),
   });
 
   // sessionId
   res.cookie('sessionId', session._id, {
     httpOnly: true,
-    secure: true,
-    sameSite: 'strict',
+    // secure: true,
+    // sameSite: 'strict',
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: process.env.NODE_ENV === 'production' ? 'None' : 'Lax',
     expires: new Date(Date.now() + ONE_DAY),
   });
 
-  // accessToken тоже можно в куку
   res.cookie('accessToken', session.accessToken, {
     httpOnly: true,
-    secure: true,
-    sameSite: 'strict',
+    // secure: true,
+    // sameSite: 'strict',
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: process.env.NODE_ENV === 'production' ? 'None' : 'Lax',
     expires: new Date(Date.now() + FIFTEEN_MINUTES),
   });
 
@@ -87,22 +71,22 @@ async function login(req, res) {
     user: {
       id: session.userId,
     },
-      data: {
-        accessToken: session.accessToken,
-      },
+    data: {
+      accessToken: session.accessToken,
+    },
   });
 }
 
 async function logout(req, res) {
   if (req.cookies.sessionId) {
     await logoutUser(req.cookies.sessionId);
-  };
+  }
 
   res.clearCookie('sessionId');
   res.clearCookie('refreshToken');
 
   res.status(204).send();
-};
+}
 
 const setupSession = (res, session) => {
   res.cookie('refreshToken', session.refreshToken, {
@@ -132,9 +116,8 @@ export const refreshSessionController = async (req, res) => {
   });
 };
 
-
-export const requestResetEmailController = async(req, res) => {
-  await requestResetToken(req.body.email)
+export const requestResetEmailController = async (req, res) => {
+  await requestResetToken(req.body.email);
 
   res.json({
     message: 'Reset password email was successfully sent!',
@@ -167,12 +150,12 @@ export const loginWithGoogleController = async (req, res) => {
   const session = await loginOrSignupWithGoogle(req.body.code);
   setupSession(res, session);
 
- res.cookie('accessToken', session.accessToken, {
-   httpOnly: true,
-   secure: process.env.NODE_ENV === 'production',
-   sameSite: 'lax', // нужно для Google redirect
-   maxAge: 7 * 24 * 60 * 60 * 1000, // 7 дней
- });
+  res.cookie('accessToken', session.accessToken, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'lax',
+    maxAge: 7 * 24 * 60 * 60 * 1000, // 7 дней
+  });
   res.json({
     status: 200,
     message: 'Successfully logged in via Google OAuth!',
@@ -185,7 +168,6 @@ export const loginWithGoogleController = async (req, res) => {
 export const getInfoUserController = async (req, res) => {
   const userId = req.user._id;
   const user = await getInfoUserService(userId);
-console.log('userId---', userId);
 
   res.status(200).json({
     status: 200,
@@ -194,7 +176,6 @@ console.log('userId---', userId);
 };
 
 export { register, login, logout };
-
 
 export const getCurrentUser = async (req, res) => {
   const sessionId = req.cookies.sessionId;
@@ -212,8 +193,8 @@ export const getCurrentUser = async (req, res) => {
 
   const user = session.userId;
 
-   res.status(200).json({
-     status: 200,
-     data: user,
-   });
+  res.status(200).json({
+    status: 200,
+    data: user,
+  });
 };
