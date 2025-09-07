@@ -21,7 +21,10 @@ export const setupServer = () => {
   // app.use(cors());
   app.use(
     cors({
-     origin: 'http://localhost:3000','https://smart-assistant-delta.vercel.app/'
+      origin: [
+        'http://localhost:3000',
+        'https://smart-assistant-delta.vercel.app',
+      ],
       credentials: true,
     }),
   );
