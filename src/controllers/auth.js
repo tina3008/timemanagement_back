@@ -4,7 +4,8 @@ import {
   logoutUser,
   refreshSession,
   requestResetToken,
-  resetPassword,
+  // resetPassword,
+  changePassword,
   loginOrSignupWithGoogle,
   getInfoUserService,
 } from '../services/auth.js';
@@ -135,20 +136,16 @@ export const requestResetEmailController = async (req, res) => {
 //   });
 // };
 
-export const resetPasswordController = async (req, res) => {
-  const token = req.cookies.resetToken;
-
-  await resetPassword({
-    password: req.body.password,
-    token,
-  });
-
+export const changePasswordController = async (req, res) => {
+  const { oldPassword, newPassword } = req.body;
+  await changePassword(req.user._id, oldPassword, newPassword);
   res.json({
-    message: 'Password was successfully reset!',
+    message: 'Password was successfully changed!',
     status: 200,
     data: {},
   });
 };
+
 
 export const getGoogleOAuthUrlController = async (req, res) => {
   const url = generateAuthUrl();

@@ -5,11 +5,12 @@ import {
   logout,
   refreshSessionController,
   requestResetEmailController,
-  resetPasswordController,
+  // resetPasswordController,
   getGoogleOAuthUrlController,
   loginWithGoogleController,
   getInfoUserController,
   getCurrentUser,
+  changePasswordController,
 } from '../controllers/auth.js';
 import { ctrlWrapper } from '../middlewares/ctrlWrapper.js';
 import {
@@ -44,11 +45,19 @@ authRouter.post(
   ctrlWrapper(requestResetEmailController),
 );
 
+// authRouter.post(
+//   '/reset-pwd',
+//   validateBody(resetPasswordSchema),
+//   ctrlWrapper(resetPasswordController),
+// );
+
 authRouter.post(
   '/reset-pwd',
+  authenticate,
   validateBody(resetPasswordSchema),
-  ctrlWrapper(resetPasswordController),
+  ctrlWrapper(changePasswordController),
 );
+
 
 authRouter.get('/get-oauth-url', ctrlWrapper(getGoogleOAuthUrlController));
 

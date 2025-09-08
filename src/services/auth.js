@@ -139,27 +139,41 @@ export const requestResetToken = async (email) => {
   });
 };
 
-export const resetPassword = async (payload) => {
-  let entries;
+// export const resetPassword = async (payload) => {
+//   let entries;
 
-  try {
-     entries = jwt.verify(payload.token, env('JWT_SECRET'));
-    //  entries = jwt.verify(payload.resetToken, env('JWT_SECRET'));
-  } catch (err) {
-    if (err instanceof Error) throw createHttpError(401, err.message);
-    throw err;
-  }
+//   try {
+//      entries = jwt.verify(payload.token, env('JWT_SECRET'));
+//   } catch (err) {
+//     if (err instanceof Error) throw createHttpError(401, err.message);
+//     throw err;
+//   }
 
-  const user = await UsersCollection.findOne({
-    email: entries.email,
-    _id: entries.sub,
-  });
+//   const user = await UsersCollection.findOne({
+//     email: entries.email,
+//     _id: entries.sub,
+//   });
 
-  if (!user) {
-    throw createHttpError(404, 'User not found');
-  }
+//   if (!user) {
+//     throw createHttpError(404, 'User not found');
+//   }
 
-  const encryptedPassword = await bcrypt.hash(payload.password, 10);
+//   const encryptedPassword = await bcrypt.hash(payload.password, 10);
+
+//   await UsersCollection.updateOne(
+//     { _id: user._id },
+//     { password: encryptedPassword },
+//   );
+// };
+
+export const changePassword = async (userId, oldPassword, newPassword) => {
+  const user = await UsersCollection.findById(userId);
+  if (!user) throw createHttpError(404, 'User not found');
+
+  const isMatch = await bcrypt.compare(oldPassword, user.password);
+  if (!isMatch) throw createHttpError(400, 'Old password is incorrect');
+
+  const encryptedPassword = await bcrypt.hash(newPassword, 10);
 
   await UsersCollection.updateOne(
     { _id: user._id },

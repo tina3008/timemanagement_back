@@ -35,7 +35,6 @@ tasksRouter.get('/day', authenticate, ctrlWrapper(getTasksByDay));
 tasksRouter.get('/month', authenticate, ctrlWrapper(getTasksByMonth));
 tasksRouter.get(
   '/:taskId',
-  authenticate,
   isValidID,
   checkRoles(ROLES.AUTOR),
   ctrlWrapper(getTaskIDController),
