@@ -17,7 +17,8 @@ import {
   validUserSchema,
   loginSchema,
   requestResetEmailSchema,
-  resetPasswordSchema,
+  // resetPasswordSchema,
+  changePasswordSchema,
   loginWithGoogleOAuthSchema,
 } from '../validation/auth.js';
 import { validateBody } from '../middlewares/validateBody.js';
@@ -52,9 +53,9 @@ authRouter.post(
 // );
 
 authRouter.post(
-  '/reset-pwd',
+  '/change-pwd',
   authenticate,
-  validateBody(resetPasswordSchema),
+  validateBody(changePasswordSchema),
   ctrlWrapper(changePasswordController),
 );
 
