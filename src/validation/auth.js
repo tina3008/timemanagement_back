@@ -1,4 +1,4 @@
-import Joi from "joi";
+import Joi from 'joi';
 
 export const validUserSchema = Joi.object({
   name: Joi.string().min(3).max(30).required(),
@@ -15,12 +15,10 @@ export const requestResetEmailSchema = Joi.object({
   email: Joi.string().email().required(),
 });
 
-
-// export const resetPasswordSchema = Joi.object({
-//   password: Joi.string().required(),
-//   token: Joi.string().required(),
-// });
-import Joi from 'joi';
+export const resetPasswordSchema = Joi.object({
+  password: Joi.string().required(),
+  token: Joi.string().required(),
+});
 
 export const changePasswordSchema = Joi.object({
   oldPassword: Joi.string().min(6).required(),
