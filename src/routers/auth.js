@@ -56,7 +56,7 @@ authRouter.post(
 authRouter.get('/get-oauth-url', ctrlWrapper(getGoogleOAuthUrlController));
 
 authRouter.post(
-  '/confirm-auth',
+  '/confirm-oauth',
   validateBody(loginWithGoogleOAuthSchema),
   ctrlWrapper(loginWithGoogleController),
 );
