@@ -4,17 +4,13 @@ import {
   logoutUser,
   refreshSession,
   requestResetToken,
-  // resetPassword,
   changePassword,
   loginOrSignupWithGoogle,
   getInfoUserService,
 } from '../services/auth.js';
-// import { ONE_DAY } from '../constants/index.js';
-import { generateAuthUrl } from '../utils/googleOAuth2.js';
-import { log } from 'node:console';
 
+import { generateAuthUrl } from '../utils/googleOAuth2.js';
 import { FIFTEEN_MINUTES, ONE_DAY } from '../constants/index.js';
-import { UsersCollection } from '../db/models/User.js';
 import { SessionsCollections } from '../db/models/Session.js';
 
 async function register(req, res) {
@@ -127,15 +123,6 @@ export const requestResetEmailController = async (req, res) => {
   });
 };
 
-// export const resetPasswordController = async (req, res) => {
-//   await resetPassword(req.body);
-//   res.json({
-//     message: 'Password was successfully reset!',
-//     status: 200,
-//     data: {},
-//   });
-// };
-
 export const changePasswordController = async (req, res) => {
   const { oldPassword, newPassword } = req.body;
   await changePassword(req.user._id, oldPassword, newPassword);
@@ -145,7 +132,6 @@ export const changePasswordController = async (req, res) => {
     data: {},
   });
 };
-
 
 export const getGoogleOAuthUrlController = async (req, res) => {
   const url = generateAuthUrl();

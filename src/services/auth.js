@@ -15,7 +15,10 @@ import { UsersCollection } from '../db/models/User.js';
 import { SessionsCollections } from '../db/models/Session.js';
 import { FIFTEEN_MINUTES, ONE_DAY } from '../constants/index.js';
 import { log } from 'console';
-import { getFullNameFromGoogleTokenPayload, validateCode } from '../utils/googleOAuth2.js';
+import {
+  getFullNameFromGoogleTokenPayload,
+  validateCode,
+} from '../utils/googleOAuth2.js';
 
 export const registerUser = async (payload) => {
   const user = await UsersCollection.findOne({ email: payload.email });
@@ -28,7 +31,6 @@ export const registerUser = async (payload) => {
 
   return UsersCollection.create(payload);
 };
-
 
 export const loginUser = async ({ email, password }) => {
   const user = await UsersCollection.findOne({ email });
@@ -98,7 +100,6 @@ export const refreshSession = async ({ sessionId, refreshToken }) => {
   });
 };
 
-
 export const requestResetToken = async (email) => {
   const user = await UsersCollection.findOne({ email });
   if (!user) {
@@ -132,39 +133,11 @@ export const requestResetToken = async (email) => {
 
   await sendEmail({
     from: env(SMTP.SMTP_FROM),
-    // to: 'kicja_3@ukr.net',
     to: email,
     subject: 'Reset your password',
     html,
   });
 };
-
-// export const resetPassword = async (payload) => {
-//   let entries;
-
-//   try {
-//      entries = jwt.verify(payload.token, env('JWT_SECRET'));
-//   } catch (err) {
-//     if (err instanceof Error) throw createHttpError(401, err.message);
-//     throw err;
-//   }
-
-//   const user = await UsersCollection.findOne({
-//     email: entries.email,
-//     _id: entries.sub,
-//   });
-
-//   if (!user) {
-//     throw createHttpError(404, 'User not found');
-//   }
-
-//   const encryptedPassword = await bcrypt.hash(payload.password, 10);
-
-//   await UsersCollection.updateOne(
-//     { _id: user._id },
-//     { password: encryptedPassword },
-//   );
-// };
 
 export const changePassword = async (userId, oldPassword, newPassword) => {
   const user = await UsersCollection.findById(userId);
@@ -180,6 +153,30 @@ export const changePassword = async (userId, oldPassword, newPassword) => {
     { password: encryptedPassword },
   );
 };
+
+// export const loginOrSignupWithGoogle = async (code) => {
+//   const loginTicket = await validateCode(code);
+//   const payload = loginTicket.getPayload();
+//   if (!payload) throw createHttpError(401);
+
+//   let user = await UsersCollection.findOne({ email: payload.email });
+//   if (!user) {
+//     const password = await bcrypt.hash(randomBytes(10), 10);
+//     user = await UsersCollection.create({
+//       email: payload.email,
+//       name: getFullNameFromGoogleTokenPayload(payload),
+//       password,
+//       role: 'parent',
+//     });
+//   }
+
+//   const newSession = createSession();
+
+//   return await SessionsCollections.create({
+//     userId: user._id,
+//     ...newSession,
+//   });
+// };
 
 export const loginOrSignupWithGoogle = async (code) => {
   const loginTicket = await validateCode(code);
@@ -199,10 +196,14 @@ export const loginOrSignupWithGoogle = async (code) => {
 
   const newSession = createSession();
 
-  return await SessionsCollections.create({
-    userId: user._id,
-    ...newSession,
-  });
+  // ⬇️ Обновляем существующую сессию или создаём новую
+  const session = await SessionsCollections.findOneAndUpdate(
+    { userId: user._id },
+    { ...newSession },
+    { new: true, upsert: true } // вернёт обновлённую, создаст если нет
+  );
+
+  return session;
 };
 
 export const getInfoUserService = (userId) => {
@@ -210,4 +211,3 @@ export const getInfoUserService = (userId) => {
 
   return UsersCollection.findOne({ _id: userId });
 };
-
