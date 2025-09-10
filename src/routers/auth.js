@@ -46,12 +46,6 @@ authRouter.post(
   ctrlWrapper(requestResetEmailController),
 );
 
-// authRouter.post(
-//   '/reset-pwd',
-//   validateBody(resetPasswordSchema),
-//   ctrlWrapper(resetPasswordController),
-// );
-
 authRouter.post(
   '/change-pwd',
   authenticate,
@@ -59,12 +53,12 @@ authRouter.post(
   ctrlWrapper(changePasswordController),
 );
 
-
 authRouter.get('/get-oauth-url', ctrlWrapper(getGoogleOAuthUrlController));
 
 authRouter.post(
-  '/confirm-oauth',
+  '/confirm-auth',
   validateBody(loginWithGoogleOAuthSchema),
   ctrlWrapper(loginWithGoogleController),
 );
+
 export default authRouter;
