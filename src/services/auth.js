@@ -154,7 +154,6 @@ export const changePassword = async (userId, oldPassword, newPassword) => {
   );
 };
 
-
 export const loginOrSignupWithGoogle = async (code) => {
   const loginTicket = await validateCode(code);
   const payload = loginTicket.getPayload();
@@ -176,7 +175,7 @@ export const loginOrSignupWithGoogle = async (code) => {
   const session = await SessionsCollections.findOneAndUpdate(
     { userId: user._id },
     { ...newSession },
-    { new: true, upsert: true }
+    { new: true, upsert: true },
   );
 
   return session;
@@ -186,4 +185,23 @@ export const getInfoUserService = (userId) => {
   console.log('servise userId', userId);
 
   return UsersCollection.findOne({ _id: userId });
+};
+
+export const patchUser = async (userId, payload, options) => {
+  const rawResult = await UsersCollection.findOneAndUpdate(
+    { _id: userId },
+    payload,
+    {
+      new: true,
+      includeResultMetadata: true,
+      ...options,
+    },
+  );
+
+  if (!rawResult || !rawResult.value) return null;
+  console.log(rawResult._id);
+  return {
+    user: rawResult.value,
+    isNew: Boolean(rawResult?.lastErrorObject?.upserted),
+  };
 };

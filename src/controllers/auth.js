@@ -7,11 +7,16 @@ import {
   changePassword,
   loginOrSignupWithGoogle,
   getInfoUserService,
+  patchUser,
 } from '../services/auth.js';
 import { generateAuthUrl } from '../utils/googleOAuth2.js';
 import { FIFTEEN_MINUTES, ONE_DAY } from '../constants/index.js';
 import { SessionsCollections } from '../db/models/Session.js';
 import { env } from '../utils/env.js';
+import { saveFileToCloudinary } from '../utils/saveFileToCloudinary.js';
+import { saveFileToUploadDir } from '../utils/saveFileToUploadDir.js';
+import createHttpError from 'http-errors';
+
 async function register(req, res) {
   const registeredUser = await registerUser(req.body);
 
@@ -143,25 +148,6 @@ export const getGoogleOAuthUrlController = async (req, res) => {
   });
 };
 
-// export const loginWithGoogleController = async (req, res) => {
-//   const session = await loginOrSignupWithGoogle(req.body.code);
-//   setupSession(res, session);
-
-//   res.cookie('accessToken', session.accessToken, {
-//     httpOnly: true,
-//     secure: process.env.NODE_ENV === 'production',
-//     sameSite: 'lax',
-//     maxAge: 7 * 24 * 60 * 60 * 1000,
-//   });
-//   res.json({
-//     status: 200,
-//     message: 'Successfully logged in via Google OAuth!',
-//     data: {
-//       accessToken: session.accessToken,
-//     },
-//   });
-// };
-
 export const loginWithGoogleController = async (req, res) => {
   const session = await loginOrSignupWithGoogle(req.body.code);
   setupSession(res, session);
@@ -172,9 +158,28 @@ export const loginWithGoogleController = async (req, res) => {
     sameSite: 'lax',
     maxAge: 7 * 24 * 60 * 60 * 1000,
   });
-
-  res.redirect(`http://localhost:3000/oauth-success`);
+  res.json({
+    status: 200,
+    message: 'Successfully logged in via Google OAuth!',
+    data: {
+      accessToken: session.accessToken,
+    },
+  });
 };
+
+// export const loginWithGoogleController = async (req, res) => {
+//   const session = await loginOrSignupWithGoogle(req.body.code);
+//   setupSession(res, session);
+
+//   res.cookie('accessToken', session.accessToken, {
+//     httpOnly: true,
+//     secure: process.env.NODE_ENV === 'production',
+//     sameSite: 'lax',
+//     maxAge: 7 * 24 * 60 * 60 * 1000,
+//   });
+
+//   res.redirect(`http://localhost:3000/oauth-success`);
+// };
 
 export const getInfoUserController = async (req, res) => {
   const userId = req.user._id;
@@ -207,5 +212,39 @@ export const getCurrentUser = async (req, res) => {
   res.status(200).json({
     status: 200,
     data: user,
+  });
+};
+
+
+
+
+export const changeUserController = async (req, res, next) => {
+    const userId = req.user._id;
+
+  const photo = req.file;
+
+  let photoUrl;
+
+  if (photo) {
+    if (env('ENABLE_CLOUDINARY') === 'true') {
+      photoUrl = await saveFileToCloudinary(photo);
+    } else {
+      photoUrl = await saveFileToUploadDir(photo);
+    }
+  }
+
+ const result = await patchUser(userId, {
+    ...req.body,
+    photo: photoUrl,
+  });
+
+  if (!result) {
+    next(createHttpError(404, `User not found ${userId}`));
+    return;
+  }
+  res.json({
+    status: 200,
+    message: 'Successfully patched a User!',
+    data: result.user,
   });
 };
