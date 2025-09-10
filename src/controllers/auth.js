@@ -8,11 +8,10 @@ import {
   loginOrSignupWithGoogle,
   getInfoUserService,
 } from '../services/auth.js';
-
 import { generateAuthUrl } from '../utils/googleOAuth2.js';
 import { FIFTEEN_MINUTES, ONE_DAY } from '../constants/index.js';
 import { SessionsCollections } from '../db/models/Session.js';
-
+import { env } from '../utils/env.js';
 async function register(req, res) {
   const registeredUser = await registerUser(req.body);
 
@@ -174,7 +173,7 @@ export const loginWithGoogleController = async (req, res) => {
     maxAge: 7 * 24 * 60 * 60 * 1000,
   });
 
-  res.redirect(`${process.env.FRONTEND_URL}/oauth-success`);
+  res.redirect(`http://localhost:3000/oauth-success`);
 };
 
 export const getInfoUserController = async (req, res) => {
