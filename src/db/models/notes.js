@@ -5,6 +5,7 @@ const notesSchema = new Schema(
     note: {
       type: String,
     },
+
     userId: {
       type: Schema.Types.ObjectId,
       ref: 'User',

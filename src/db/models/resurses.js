@@ -5,6 +5,9 @@ const resursesSchema = new Schema(
     resurse: {
       type: String,
     },
+    resurseName: {
+      type: String,
+    },
     category: {
       type: String,
     },

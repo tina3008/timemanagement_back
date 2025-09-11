@@ -31,7 +31,7 @@ export const getResursesController = async (req, res) => {
   });
 };
 
-export const getResurseIDController = async (req, res, next) => {
+export const getResurseIDController = async (req, res) => {
   const { resurseId } = req.params;
   const resurse = await getResurseById(resurseId, req.user._id);
 
@@ -49,6 +49,7 @@ export const createResurseController = async (req, res) => {
   const resurseFields = {
     resurse: req.body.resurse,
     category: req.body.category,
+    resurseName: req.body.resurseName,
     userId: req.user._id,
   };
   const resurse = await createResurse(resurseFields);

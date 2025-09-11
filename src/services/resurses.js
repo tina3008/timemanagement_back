@@ -15,11 +15,11 @@ const getAllResurses = async ({
 
   const resursesQuery = ResursesCollection.find();
 
-  if (filter.isFavourite) {
-    resursesQuery.where('isFavourite').equals(filter.isFavourite);
+  if (filter.resurseName) {
+    resursesQuery.where('resurseName').equals(filter.resurseName);
   }
-  if (filter.resurseType) {
-    resursesQuery.where('resurseType').equals(filter.resurseType);
+  if (filter.category) {
+    resursesQuery.where('category').equals(filter.category);
   }
 
   resursesQuery.where('userId').equals(userId);
