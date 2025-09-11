@@ -21,6 +21,9 @@ const usersSchema = new Schema(
       type: String,
       default: ROLES.AUTOR,
     },
+      photo: { type: String },
+    reviews: { type: Object, default: {} },
+  
   },
   { timestamps: true, versionKey: false },
 );
